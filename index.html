@@ -318,14 +318,14 @@
             color: #a5d6a7;
         }
 
-        .error {
-            background: rgba(244, 67, 54, 0.2);
-            color: #ffab91;
+        .warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ffe082;
         }
 
-        /* Instructions */
-        .instructions {
-            background: rgba(255, 152, 0, 0.2);
+        /* Demo Audio Notice */
+        .demo-notice {
+            background: rgba(255, 152, 0, 0.3);
             border-left: 4px solid #ff9800;
             padding: 15px;
             margin: 15px 0;
@@ -394,18 +394,14 @@
                     <h3 class="book-title">The Silent Echo</h3>
                     <p class="book-author">By Jonathan Miles</p>
                     
-                    <div class="instructions">
-                        <p><i class="fas fa-info-circle"></i> Using Google Drive audio links. If audio doesn't play, make sure the files are shared publicly.</p>
+                    <div class="demo-notice">
+                        <p><i class="fas fa-info-circle"></i> <strong>Demo Mode</strong>: Using simulated audio for demonstration. To use your own audio files, host them online and update the URLs in the code.</p>
                     </div>
                     
                     <div class="audio-selection">
-                        <button class="audio-btn active" data-audio="1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS">Audio 1</button>
-                        <button class="audio-btn" data-audio="1OG-mydXBTf3F9TC6eukL-9w7nCDgSq97">Audio 2</button>
+                        <button class="audio-btn active" data-audio="demo">Demo Audio 1</button>
+                        <button class="audio-btn" data-audio="demo2">Demo Audio 2</button>
                     </div>
-                    
-                    <audio id="audio-player" class="audio-player" controls>
-                        <!-- Audio source will be set by JavaScript -->
-                    </audio>
                     
                     <div class="progress-container">
                         <div class="progress-bar" id="progress-bar"></div>
@@ -437,17 +433,16 @@
                 </div>
                 
                 <div class="form-section">
-                    <h2 class="section-title">Google Drive Instructions</h2>
-                    <div class="instructions">
-                        <h3><i class="fab fa-google-drive"></i> Cara Menggunakan Google Drive:</h3>
+                    <h2 class="section-title">Hosting Instructions</h2>
+                    <div class="demo-notice">
+                        <h3><i class="fas fa-cloud-upload-alt"></i> How to Host Your Audio Files:</h3>
                         <ol>
-                            <li>Buka Google Drive dan upload file audio Anda</li>
-                            <li>Klik kanan pada file → "Get shareable link"</li>
-                            <li>Pastikan set ke "Anyone with the link"</li>
-                            <li>Salin ID file dari URL (contoh: 1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS)</li>
-                            <li>Tempel ID tersebut ke dalam kode JavaScript</li>
+                            <li>Upload your audio files to a hosting service (Google Drive, Dropbox, etc.)</li>
+                            <li>Get the direct download link (not the view link)</li>
+                            <li>Replace the demo audio URLs in the JavaScript code with your links</li>
+                            <li>Ensure the files are publicly accessible</li>
                         </ol>
-                        <p>Format URL yang benar: <code>https://drive.google.com/uc?export=download&id=FILE_ID</code></p>
+                        <p>For Google Drive: Share file → Change to "Anyone with the link" → Copy the ID from the URL</p>
                     </div>
                     
                     <h2 class="section-title">Request an Audiobook</h2>
@@ -489,7 +484,7 @@
         
         <footer>
             <p>&copy; 2023 AudioVerse. All rights reserved.</p>
-            <p>Using Google Drive audio files. Make sure they are publicly accessible.</p>
+            <p>Audio simulation for demonstration purposes. Replace with your hosted audio files.</p>
         </footer>
     </div>
 
@@ -499,7 +494,7 @@
             "title": "The Silent Echo",
             "author": "Jonathan Miles",
             "cover": "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "audio": "1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS",
+            "audio": "demo",
             "text": [
                 {"start": 0, "end": 4, "content": "The forest was silent that morning, a deep and profound silence that seemed to swallow all sound."},
                 {"start": 4, "end": 8, "content": "It was in this silence that Emma first heard the echo, a faint whisper that seemed to come from nowhere and everywhere at once."},
@@ -560,16 +555,14 @@
         const currentTimeEl = document.getElementById('current-time');
         const durationEl = document.getElementById('duration');
 
-        // Function to convert Google Drive ID to direct download URL
-        function getGoogleDriveUrl(fileId) {
-            return `https://drive.google.com/uc?export=download&id=${fileId}`;
-        }
+        // Demo mode variables
+        let isPlaying = false;
+        let currentTime = 0;
+        let duration = 36; // 36 seconds for demo
+        let progressInterval;
 
         // Initialize the player
         function initPlayer() {
-            // Set audio source
-            audioPlayer.src = getGoogleDriveUrl(audiobookData.audio);
-            
             // Display text
             let textHTML = '';
             audiobookData.text.forEach(fragment => {
@@ -596,45 +589,54 @@
             });
             audiobookCards.innerHTML = cardsHTML;
             
-            // Set up event listeners for audio player
-            setupAudioPlayer();
+            // Set initial time display
+            updateTimeDisplay();
         }
 
-        // Set up audio player event listeners
-        function setupAudioPlayer() {
-            audioPlayer.addEventListener('timeupdate', updateProgress);
-            audioPlayer.addEventListener('loadedmetadata', () => {
-                durationEl.textContent = formatTime(audioPlayer.duration);
-            });
-            
-            audioPlayer.addEventListener('play', () => {
-                playBtn.querySelector('i').className = 'fas fa-pause';
-            });
-            
-            audioPlayer.addEventListener('pause', () => {
-                playBtn.querySelector('i').className = 'fas fa-play';
-            });
-            
-            audioPlayer.addEventListener('ended', () => {
-                playBtn.querySelector('i').className = 'fas fa-play';
-            });
-        }
-
-        // Update progress bar and time display
-        function updateProgress() {
-            if (audioPlayer.duration) {
-                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                progressBar.style.width = `${percent}%`;
-                currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
-                highlightText(audioPlayer.currentTime);
+        // Simulate audio playback
+        function simulatePlayback() {
+            if (isPlaying) {
+                clearInterval(progressInterval);
+                return;
             }
+            
+            isPlaying = true;
+            playBtn.querySelector('i').className = 'fas fa-pause';
+            
+            progressInterval = setInterval(() => {
+                if (currentTime < duration) {
+                    currentTime += 0.1;
+                    updateProgress();
+                    highlightText(currentTime);
+                } else {
+                    simulatePause();
+                    currentTime = 0;
+                    updateProgress();
+                }
+            }, 100);
         }
 
-        // Format time to MM:SS
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        function simulatePause() {
+            isPlaying = false;
+            clearInterval(progressInterval);
+            playBtn.querySelector('i').className = 'fas fa-play';
+        }
+
+        function updateProgress() {
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            updateTimeDisplay();
+        }
+
+        function updateTimeDisplay() {
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            };
+            
+            currentTimeEl.textContent = formatTime(currentTime);
+            durationEl.textContent = formatTime(duration);
         }
 
         // Highlight text based on current time
@@ -655,43 +657,68 @@
         }
 
         // Switch audio source
-        function switchAudioSource(fileId) {
-            audioPlayer.src = getGoogleDriveUrl(fileId);
-            audioPlayer.play();
+        function switchAudioSource(source) {
+            // In a real implementation, this would change the audio source
+            simulatePause();
+            currentTime = 0;
+            updateProgress();
             
             // Update active button
             audioButtons.forEach(btn => {
-                if (btn.getAttribute('data-audio') === fileId) {
+                if (btn.getAttribute('data-audio') === source) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
                 }
             });
+            
+            // Show a message about the selected audio
+            const statusMessage = document.createElement('div');
+            statusMessage.className = 'status-message warning';
+            statusMessage.innerHTML = `<i class="fas fa-info-circle"></i> Selected ${source}. In a real implementation, this would load the actual audio file.`;
+            
+            // Remove any existing status message
+            const existingMessage = document.querySelector('.status-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Insert after the audio selection buttons
+            document.querySelector('.audio-selection').after(statusMessage);
         }
 
-        // Event Listeners for control buttons
+        // Event Listeners
         playBtn.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
+            if (isPlaying) {
+                simulatePause();
             } else {
-                audioPlayer.pause();
+                simulatePlayback();
             }
         });
 
         pauseBtn.addEventListener('click', () => {
-            audioPlayer.pause();
+            simulatePause();
         });
 
         prevBtn.addEventListener('click', () => {
-            audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10);
+            currentTime = Math.max(0, currentTime - 10);
+            updateProgress();
+            highlightText(currentTime);
         });
 
         nextBtn.addEventListener('click', () => {
-            audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 10);
+            currentTime = Math.min(duration, currentTime + 10);
+            updateProgress();
+            highlightText(currentTime);
         });
 
         restartBtn.addEventListener('click', () => {
-            audioPlayer.currentTime = 0;
+            currentTime = 0;
+            updateProgress();
+            highlightText(currentTime);
+            if (isPlaying) {
+                simulatePlayback();
+            }
         });
 
         // Audio selection buttons
@@ -703,12 +730,12 @@
 
         // Progress bar seeking
         progressBar.parentElement.addEventListener('click', (e) => {
-            if (audioPlayer.duration) {
-                const rect = progressBar.parentElement.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const width = rect.width;
-                audioPlayer.currentTime = (clickX / width) * audioPlayer.duration;
-            }
+            const rect = progressBar.parentElement.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            currentTime = (clickX / width) * duration;
+            updateProgress();
+            highlightText(currentTime);
         });
 
         audiobookForm.addEventListener('submit', (e) => {
