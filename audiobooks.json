@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "The Silent Echo",
+    "author": "Jonathan Miles",
+    "cover": "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "audio": "https://drive.google.com/uc?export=download&id=1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS",
+    "transcript": "transcripts/book1.json"
+  },
+  {
+    "id": 2,
+    "title": "Ocean's Whisper",
+    "author": "Maria Jensen",
+    "cover": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "audio": "https://drive.google.com/uc?export=download&id=1OG-mydXBTf3F9TC6eukL-9w7nCDgSq97",
+    "transcript": "transcripts/book2.json"
+  }
+]

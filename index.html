@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioVerse - Modern Audiobook Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AudioVerse</h1>
+            <p>Immerse yourself in captivating stories with our premium audiobook collection</p>
+        </header>
+
+        <div class="main-content">
+            <div class="player-section">
+                <h2 class="section-title">Now Playing</h2>
+                <div class="player-container">
+                    <img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Book Cover" class="book-cover">
+                    <h3 class="book-title">The Silent Echo</h3>
+                    <p class="book-author">By Jonathan Miles</p>
+                    
+                    <audio id="audio-player" class="audio-player" controls>
+                        <!-- Audio source will be set by JavaScript -->
+                    </audio>
+                    
+                    <div class="player-controls">
+                        <button class="control-btn" id="play-btn"><i class="fas fa-play"></i></button>
+                        <button class="control-btn" id="pause-btn"><i class="fas fa-pause"></i></button>
+                        <button class="control-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
+                        <button class="control-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
+                    </div>
+                    
+                    <div class="text-display" id="text-display">
+                        <!-- Text will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cards-section">
+                <h2 class="section-title">Audiobook Collection</h2>
+                <div class="audiobook-cards" id="audiobook-cards">
+                    <!-- Cards will be populated by JavaScript -->
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">Request an Audiobook</h2>
+                    <form id="audiobook-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="title">Book Title</label>
+                                <input type="text" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="author">Author</label>
+                                <input type="text" id="author" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="genre">Genre</label>
+                                <select id="genre">
+                                    <option value="fiction">Fiction</option>
+                                    <option value="non-fiction">Non-Fiction</option>
+                                    <option value="sci-fi">Science Fiction</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="mystery">Mystery</option>
+                                    <option value="biography">Biography</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Additional Notes</label>
+                            <textarea id="message"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Submit Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 AudioVerse. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
