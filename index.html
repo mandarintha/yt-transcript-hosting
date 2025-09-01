@@ -5,7 +5,379 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AudioVerse - Modern Audiobook Experience</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #4facfe, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Player Section */
+        .player-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .player-container {
+            text-align: center;
+        }
+
+        .book-cover {
+            width: 250px;
+            height: 250px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover:hover {
+            transform: scale(1.03);
+        }
+
+        .book-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .book-author {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Text Display */
+        .text-display {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            color: #000;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        /* Cards Section */
+        .cards-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .audiobook-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #f6d365;
+        }
+
+        .card-author {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .card-duration {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            opacity: 0.7;
+        }
+
+        /* Audio Selection */
+        .audio-selection {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-btn.active {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            color: #000;
+        }
+
+        /* Status Message */
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #a5d6a7;
+        }
+
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #ffab91;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: rgba(255, 152, 0, 0.2);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Time Display */
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -22,15 +394,34 @@
                     <h3 class="book-title">The Silent Echo</h3>
                     <p class="book-author">By Jonathan Miles</p>
                     
+                    <div class="instructions">
+                        <p><i class="fas fa-info-circle"></i> Using Google Drive audio links. If audio doesn't play, make sure the files are shared publicly.</p>
+                    </div>
+                    
+                    <div class="audio-selection">
+                        <button class="audio-btn active" data-audio="1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS">Audio 1</button>
+                        <button class="audio-btn" data-audio="1OG-mydXBTf3F9TC6eukL-9w7nCDgSq97">Audio 2</button>
+                    </div>
+                    
                     <audio id="audio-player" class="audio-player" controls>
                         <!-- Audio source will be set by JavaScript -->
                     </audio>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
                     
                     <div class="player-controls">
                         <button class="control-btn" id="play-btn"><i class="fas fa-play"></i></button>
                         <button class="control-btn" id="pause-btn"><i class="fas fa-pause"></i></button>
                         <button class="control-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
                         <button class="control-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
+                        <button class="control-btn" id="restart-btn"><i class="fas fa-redo"></i></button>
                     </div>
                     
                     <div class="text-display" id="text-display">
@@ -46,6 +437,19 @@
                 </div>
                 
                 <div class="form-section">
+                    <h2 class="section-title">Google Drive Instructions</h2>
+                    <div class="instructions">
+                        <h3><i class="fab fa-google-drive"></i> Cara Menggunakan Google Drive:</h3>
+                        <ol>
+                            <li>Buka Google Drive dan upload file audio Anda</li>
+                            <li>Klik kanan pada file → "Get shareable link"</li>
+                            <li>Pastikan set ke "Anyone with the link"</li>
+                            <li>Salin ID file dari URL (contoh: 1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS)</li>
+                            <li>Tempel ID tersebut ke dalam kode JavaScript</li>
+                        </ol>
+                        <p>Format URL yang benar: <code>https://drive.google.com/uc?export=download&id=FILE_ID</code></p>
+                    </div>
+                    
                     <h2 class="section-title">Request an Audiobook</h2>
                     <form id="audiobook-form">
                         <div class="form-grid">
@@ -85,9 +489,236 @@
         
         <footer>
             <p>&copy; 2023 AudioVerse. All rights reserved.</p>
+            <p>Using Google Drive audio files. Make sure they are publicly accessible.</p>
         </footer>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Sample JSON data with timestamps and text
+        const audiobookData = {
+            "title": "The Silent Echo",
+            "author": "Jonathan Miles",
+            "cover": "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+            "audio": "1Wd1YDoYQMqSuo76lh9aqlF-KE9AqeRTS",
+            "text": [
+                {"start": 0, "end": 4, "content": "The forest was silent that morning, a deep and profound silence that seemed to swallow all sound."},
+                {"start": 4, "end": 8, "content": "It was in this silence that Emma first heard the echo, a faint whisper that seemed to come from nowhere and everywhere at once."},
+                {"start": 8, "end": 12, "content": "She stopped, her breath catching in her throat, and listened intently. There it was again, a little clearer this time."},
+                {"start": 12, "end": 16, "content": "It sounded like her name, spoken in a voice she almost recognized. A chill ran down her spine despite the warmth of the morning sun."},
+                {"start": 16, "end": 20, "content": "Emma had been walking these woods for twenty years, since she was a child playing among these ancient oaks and pines."},
+                {"start": 20, "end": 24, "content": "She knew every path, every clearing, every sound these woods made. But this was new, and unfamiliar."},
+                {"start": 24, "end": 28, "content": "The voice called again, clearer now, and she found herself moving toward it, drawn by a curiosity that overpowered her fear."},
+                {"start": 28, "end": 32, "content": "She moved off the path, pushing through underbrush that grabbed at her jeans like pleading hands."},
+                {"start": 32, "end": 36, "content": "The voice grew louder, more distinct, and now she was certain—it was her grandmother's voice, though her grandmother had passed away five years ago."}
+            ]
+        };
+
+        // Sample audiobook collection
+        const audiobooks = [
+            {
+                id: 1,
+                title: "The Silent Echo",
+                author: "Jonathan Miles",
+                cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                duration: "4h 22m"
+            },
+            {
+                id: 2,
+                title: "Ocean's Whisper",
+                author: "Maria Jensen",
+                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                duration: "5h 45m"
+            },
+            {
+                id: 3,
+                title: "The Midnight Library",
+                author: "Matt Haig",
+                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                duration: "6h 17m"
+            },
+            {
+                id: 4,
+                title: "Desert Stars",
+                author: "Ahmed Al-Mansoori",
+                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                duration: "7h 08m"
+            }
+        ];
+
+        // DOM Elements
+        const audioPlayer = document.getElementById('audio-player');
+        const textDisplay = document.getElementById('text-display');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const audiobookCards = document.getElementById('audiobook-cards');
+        const audiobookForm = document.getElementById('audiobook-form');
+        const audioButtons = document.querySelectorAll('.audio-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+
+        // Function to convert Google Drive ID to direct download URL
+        function getGoogleDriveUrl(fileId) {
+            return `https://drive.google.com/uc?export=download&id=${fileId}`;
+        }
+
+        // Initialize the player
+        function initPlayer() {
+            // Set audio source
+            audioPlayer.src = getGoogleDriveUrl(audiobookData.audio);
+            
+            // Display text
+            let textHTML = '';
+            audiobookData.text.forEach(fragment => {
+                textHTML += `<p data-start="${fragment.start}" data-end="${fragment.end}">${fragment.content}</p>`;
+            });
+            textDisplay.innerHTML = textHTML;
+            
+            // Create audiobook cards
+            let cardsHTML = '';
+            audiobooks.forEach(book => {
+                cardsHTML += `
+                    <div class="card" data-id="${book.id}">
+                        <img src="${book.cover}" alt="${book.title}" class="card-img">
+                        <div class="card-content">
+                            <h3 class="card-title">${book.title}</h3>
+                            <p class="card-author">By ${book.author}</p>
+                            <div class="card-duration">
+                                <span><i class="fas fa-headphones"></i> Audiobook</span>
+                                <span>${book.duration}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            audiobookCards.innerHTML = cardsHTML;
+            
+            // Set up event listeners for audio player
+            setupAudioPlayer();
+        }
+
+        // Set up audio player event listeners
+        function setupAudioPlayer() {
+            audioPlayer.addEventListener('timeupdate', updateProgress);
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audioPlayer.duration);
+            });
+            
+            audioPlayer.addEventListener('play', () => {
+                playBtn.querySelector('i').className = 'fas fa-pause';
+            });
+            
+            audioPlayer.addEventListener('pause', () => {
+                playBtn.querySelector('i').className = 'fas fa-play';
+            });
+            
+            audioPlayer.addEventListener('ended', () => {
+                playBtn.querySelector('i').className = 'fas fa-play';
+            });
+        }
+
+        // Update progress bar and time display
+        function updateProgress() {
+            if (audioPlayer.duration) {
+                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressBar.style.width = `${percent}%`;
+                currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+                highlightText(audioPlayer.currentTime);
+            }
+        }
+
+        // Format time to MM:SS
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Highlight text based on current time
+        function highlightText(currentTime) {
+            const paragraphs = textDisplay.querySelectorAll('p');
+            paragraphs.forEach(p => {
+                const start = parseFloat(p.getAttribute('data-start'));
+                const end = parseFloat(p.getAttribute('data-end'));
+                
+                if (currentTime >= start && currentTime < end) {
+                    p.classList.add('highlight');
+                    // Scroll to the highlighted paragraph
+                    p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    p.classList.remove('highlight');
+                }
+            });
+        }
+
+        // Switch audio source
+        function switchAudioSource(fileId) {
+            audioPlayer.src = getGoogleDriveUrl(fileId);
+            audioPlayer.play();
+            
+            // Update active button
+            audioButtons.forEach(btn => {
+                if (btn.getAttribute('data-audio') === fileId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Event Listeners for control buttons
+        playBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            audioPlayer.pause();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 10);
+        });
+
+        restartBtn.addEventListener('click', () => {
+            audioPlayer.currentTime = 0;
+        });
+
+        // Audio selection buttons
+        audioButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchAudioSource(btn.getAttribute('data-audio'));
+            });
+        });
+
+        // Progress bar seeking
+        progressBar.parentElement.addEventListener('click', (e) => {
+            if (audioPlayer.duration) {
+                const rect = progressBar.parentElement.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                audioPlayer.currentTime = (clickX / width) * audioPlayer.duration;
+            }
+        });
+
+        audiobookForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your request! We will consider adding this audiobook to our collection.');
+            audiobookForm.reset();
+        });
+
+        // Initialize the page
+        initPlayer();
+    </script>
 </body>
 </html>
