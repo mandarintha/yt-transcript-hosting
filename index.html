@@ -1,682 +1,1477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audiobook Haven - Immersive Listening Experience</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #3a86ff;
-            --secondary: #8338ec;
-            --accent: #ff006e;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --card-bg: #ffffff;
-            --transition: all 0.3s ease;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AudioVerse - Modern Audiobook Experience</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body {
+background: linear-gradient(135deg, #1a2a6c, #4facfe, #fdbb2d);
+color: #fff;
+min-height: 100vh;
+padding: 20px;
+}
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding-bottom: 2rem;
-        }
+.container {
+max-width: 1200px;
+margin: 0 auto;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+header {
+text-align: center;
+padding: 30px 0;
+}
 
-        header {
-            text-align: center;
-            padding: 2rem 0;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 0 0 20px 20px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
+header h1 {
+font-size: 3.5rem;
+margin-bottom: 10px;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
-            margin-bottom: 0.5rem;
-        }
+header p {
+font-size: 1.2rem;
+opacity: 0.9;
+max-width: 600px;
+margin: 0 auto;
+}
 
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+.main-content {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 30px;
+margin-top: 30px;
+}
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
+@media (max-width: 900px) {
+.main-content {
+grid-template-columns: 1fr;
+}
+}
 
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
+/* Player Section */
+.player-section {
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+border-radius: 20px;
+padding: 25px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--secondary);
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
+.section-title {
+font-size: 1.8rem;
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--accent);
-        }
+.player-container {
+text-align: center;
+}
 
-        /* Player Section */
-        .player-section {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: var(--transition);
-        }
+.book-cover {
+width: 250px;
+height: 250px;
+border-radius: 15px;
+object-fit: cover;
+margin-bottom: 20px;
+box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+transition: transform 0.3s ease;
+}
 
-        .player-section:hover {
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-        }
+.book-cover:hover {
+transform: scale(1.03);
+}
 
-        .book-info {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
+.book-title {
+font-size: 1.5rem;
+margin-bottom: 10px;
+}
 
-        .book-title {
-            font-size: 1.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
+.book-author {
+font-size: 1.1rem;
+opacity: 0.8;
+margin-bottom: 20px;
+}
 
-        .book-author {
-            color: var(--gray);
-            font-style: italic;
-        }
+.audio-player {
+width: 100%;
+margin: 20px 0;
+border-radius: 10px;
+background: rgba(0, 0, 0, 0.2);
+}
 
-        .audio-player {
-            width: 100%;
-            margin: 1.5rem 0;
-            border-radius: 10px;
-            background: var(--light-gray);
-            padding: 10px;
-        }
+.player-controls {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-top: 15px;
+}
 
-        .player-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-        }
+.control-btn {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.2);
+border: none;
+color: white;
+font-size: 1.2rem;
+cursor: pointer;
+transition: all 0.3s ease;
+}
 
-        .control-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
-        }
+.control-btn:hover {
+background: rgba(255, 255, 255, 0.3);
+transform: scale(1.1);
+}
 
-        .control-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
+/* Text Display */
+.text-display {
+background: rgba(0, 0, 0, 0.2);
+border-radius: 15px;
+padding: 20px;
+height: 300px;
+overflow-y: auto;
+margin-top: 20px;
+text-align: left;
+font-size: 1.1rem;
+line-height: 1.6;
+}
 
-        .control-btn:active {
-            transform: translateY(0);
-        }
+.highlight {
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+color: #000;
+padding: 2px 4px;
+border-radius: 4px;
+transition: all 0.3s ease;
+}
 
-        .progress-container {
-            flex-grow: 1;
-            margin: 0 15px;
-            background: #dee2e6;
-            border-radius: 5px;
-            height: 8px;
-            cursor: pointer;
-            position: relative;
-        }
+/* Cards Section */
+.cards-section {
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
 
-        .progress {
-            background: var(--primary);
-            border-radius: 5px;
-            height: 100%;
-            width: 0%;
-        }
+.audiobook-cards {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 20px;
+}
 
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 5px;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
+.card {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 15px;
+overflow: hidden;
+transition: transform 0.4s ease, box-shadow 0.4s ease;
+transform-style: preserve-3d;
+perspective: 1000px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+cursor: pointer;
+}
 
-        /* Transcript Section */
-        .transcript-section {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: var(--transition);
-            max-height: 500px;
-            overflow-y: auto;
-        }
+.card:hover {
+transform: translateY(-10px) rotateX(5deg);
+box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
 
-        .transcript-section:hover {
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-        }
+.card-img {
+width: 100%;
+height: 180px;
+object-fit: cover;
+}
 
-        .transcript-content {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            padding: 10px;
-            background: var(--light);
-            border-radius: 10px;
-            font-family: 'Playfair Display', serif;
-        }
+.card-content {
+padding: 15px;
+}
 
-        .highlight {
-            background: linear-gradient(120deg, rgba(255, 237, 117, 0.8), rgba(255, 209, 102, 0.8));
-            padding: 0 2px;
-            border-radius: 3px;
-            transition: var(--transition);
-        }
+.card-title {
+font-size: 1.2rem;
+margin-bottom: 8px;
+color: #f6d365;
+}
 
-        /* Audiobook Cards */
-        .audiobooks-section {
-            margin-top: 2rem;
-        }
+.card-author {
+font-size: 0.9rem;
+opacity: 0.8;
+margin-bottom: 15px;
+}
 
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
+.card-duration {
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 0.9rem;
+}
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-            transition: var(--transition);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            cursor: pointer;
-        }
+/* Form Section */
+.form-section {
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+border-radius: 20px;
+padding: 25px;
+margin-top: 30px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
-        .card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
-        }
+.form-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 20px;
+}
 
-        .card-img {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-        }
+.form-group {
+margin-bottom: 15px;
+}
 
-        .card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
+.form-group label {
+display: block;
+margin-bottom: 8px;
+font-weight: 500;
+}
 
-        .card:hover .card-img img {
-            transform: scale(1.05);
-        }
+.form-group input,
+.form-group select,
+.form-group textarea {
+width: 100%;
+padding: 12px 15px;
+border: none;
+border-radius: 10px;
+background: rgba(255, 255, 255, 0.1);
+color: white;
+font-size: 1rem;
+}
 
-        .card-content {
-            padding: 1.5rem;
-        }
+.form-group textarea {
+height: 120px;
+resize: vertical;
+}
 
-        .card-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
+.submit-btn {
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+color: #000;
+border: none;
+padding: 12px 25px;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: transform 0.3s ease;
+}
 
-        .card-author {
-            color: var(--gray);
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
+.submit-btn:hover {
+transform: translateY(-3px);
+}
 
-        .card-desc {
-            margin-bottom: 1.5rem;
-            color: var(--gray);
-        }
+/* Footer */
+footer {
+text-align: center;
+padding: 30px 0;
+margin-top: 50px;
+opacity: 0.7;
+}
 
-        .card-duration {
-            display: flex;
-            align-items: center;
-            color: var(--primary);
-            font-weight: 500;
-        }
+/* Audio Selection */
+.audio-selection {
+margin: 15px 0;
+text-align: center;
+}
 
-        /* Form Section */
-        .form-section {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        }
+.audio-btn {
+background: rgba(255, 255, 255, 0.2);
+border: none;
+color: white;
+padding: 10px 15px;
+border-radius: 8px;
+margin: 0 5px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+.audio-btn:hover {
+background: rgba(255, 255, 255, 0.3);
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
+.audio-btn.active {
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+color: #000;
+}
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
+/* Status Message */
+.status-message {
+padding: 10px;
+margin: 10px 0;
+border-radius: 8px;
+text-align: center;
+background: rgba(0, 0, 0, 0.2);
+}
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
-        }
+.success {
+background: rgba(76, 175, 80, 0.2);
+color: #a5d6a7;
+}
 
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+.warning {
+background: rgba(255, 152, 0, 0.2);
+color: #ffe082;
+}
 
-        .btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+/* Demo Audio Notice */
+.demo-notice {
+background: rgba(255, 152, 0, 0.3);
+border-left: 4px solid #ff9800;
+padding: 15px;
+margin: 15px 0;
+border-radius: 8px;
+}
 
-        .btn:active {
-            transform: translateY(0);
-        }
+/* Progress Bar */
+.progress-container {
+width: 100%;
+height: 8px;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 4px;
+margin: 15px 0;
+overflow: hidden;
+}
 
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
+.progress-bar {
+height: 100%;
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+border-radius: 4px;
+width: 0%;
+transition: width 0.3s ease;
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2rem;
-            }
-            
-            .section-title {
-                font-size: 1.6rem;
-            }
-            
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+/* Time Display */
+.time-display {
+display: flex;
+justify-content: space-between;
+margin-top: 5px;
+font-size: 0.9rem;
+opacity: 0.8;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+width: 8px;
+}
+
+::-webkit-scrollbar-track {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.3);
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: rgba(255, 255, 255, 0.4);
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Audiobook Haven</h1>
-            <p>Immerse yourself in captivating stories with our premium audiobooks</p>
-        </div>
-    </header>
+<div class="container">
+<header>
+<h1>AudioVerse</h1>
+<p>Immerse yourself in captivating stories with our premium audiobook collection</p>
+</header>
 
-    <div class="container">
-        <div class="main-content">
-            <!-- Player Section -->
-            <section class="player-section">
-                <h2 class="section-title">Now Playing</h2>
-                <div class="book-info">
-                    <h3 class="book-title">The Silent Echo</h3>
-                    <p class="book-author">By Elizabeth Morgan</p>
-                </div>
-                
-                <audio id="audio-player" class="audio-player" controls>
-                    <source src="https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/Audiotes.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                
-                <div class="player-controls">
-                    <button class="control-btn" id="play-pause">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="progress-container" id="progress-container">
-                        <div class="progress" id="progress"></div>
-                    </div>
-                    <button class="control-btn" id="mute">
-                        <i class="fas fa-volume-up"></i>
-                    </button>
-                </div>
-                <div class="time-display">
-                    <span id="current-time">0:00</span>
-                    <span id="duration">0:00</span>
-                </div>
-            </section>
+<div class="main-content">
+<div class="player-section">
+<h2 class="section-title">Now Playing</h2>
+<div class="player-container">
+<img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Book Cover" class="book-cover">
+<h3 class="book-title">The Silent Echo</h3>
+<p class="book-author">By Jonathan Miles</p>
 
-            <!-- Transcript Section -->
-            <section class="transcript-section">
-                <h2 class="section-title">Transcript</h2>
-                <div class="transcript-content" id="transcript">
-                    <!-- Transcript will be loaded here -->
-                </div>
-            </section>
-        </div>
+<div class="demo-notice">
+<p><i class="fas fa-info-circle"></i> <strong>Demo Mode</strong>: Using simulated audio for demonstration. To use your own audio files, host them online and update the URLs in the code.</p>
+</div>
 
-        <!-- Audiobook Cards Section -->
-        <section class="audiobooks-section">
-            <h2 class="section-title">Featured Audiobooks</h2>
-            <div class="cards-container">
-                <!-- Card 1 -->
-                <div class="card" data-audio="https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/Audiotes.mp3" data-json="https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/Audiotes.json">
-                    <div class="card-img">
-                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="The Silent Echo">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">The Silent Echo</h3>
-                        <p class="card-author">Elizabeth Morgan</p>
-                        <p class="card-desc">A thrilling mystery about a detective solving a cold case that has haunted a small town for decades.</p>
-                        <p class="card-duration"><i class="far fa-clock"></i> 8 hrs 42 mins</p>
-                    </div>
-                </div>
+<div class="audio-selection">
+<button class="audio-btn active" data-audio="demo">Demo Audio 1</button>
+<button class="audio-btn" data-audio="demo2">Demo Audio 2</button>
+</div>
 
-                <!-- Card 2 -->
-                <div class="card" data-audio="https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/book1.mp3" data-json="https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/book1.json">
-                    <div class="card-img">
-                        <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Whispers of the Past">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Whispers of the Past</h3>
-                        <p class="card-author">Michael Reeves</p>
-                        <p class="card-desc">A historical fiction novel set in Victorian England, exploring themes of love and societal expectations.</p>
-                        <p class="card-duration"><i class="far fa-clock"></i> 12 hrs 15 mins</p>
-                    </div>
-                </div>
+<div class="progress-container">
+<div class="progress-bar" id="progress-bar"></div>
+</div>
 
-                <!-- Card 3 -->
-                <div class="card">
-                    <div class="card-img">
-                        <img src="https://images.unsplash.com/photo-1536746803623-cef87080c7b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Beyond the Horizon">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Beyond the Horizon</h3>
-                        <p class="card-author">Sarah Jenkins</p>
-                        <p class="card-desc">A science fiction adventure following a crew of astronauts as they explore a newly discovered planet.</p>
-                        <p class="card-duration"><i class="far fa-clock"></i> 10 hrs 28 mins</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div class="time-display">
+<span id="current-time">0:00</span>
+<span id="duration">0:00</span>
+</div>
 
-        <!-- Form Section -->
-        <section class="form-section">
-            <h2 class="section-title">Suggest an Audiobook</h2>
-            <form id="audiobook-form">
-                <div class="form-group">
-                    <label for="title">Book Title</label>
-                    <input type="text" id="title" name="title" required placeholder="Enter book title">
-                </div>
-                <div class="form-group">
-                    <label for="author">Author</label>
-                    <input type="text" id="author" name="author" required placeholder="Enter author name">
-                </div>
-                <div class="form-group">
-                    <label for="genre">Genre</label>
-                    <select id="genre" name="genre" required>
-                        <option value="">Select a genre</option>
-                        <option value="fiction">Fiction</option>
-                        <option value="non-fiction">Non-Fiction</option>
-                        <option value="mystery">Mystery</option>
-                        <option value="sci-fi">Science Fiction</option>
-                        <option value="fantasy">Fantasy</option>
-                        <option value="biography">Biography</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="4" placeholder="Brief description of the book"></textarea>
-                </div>
-                <button type="submit" class="btn">
-                    <i class="fas fa-paper-plane"></i> Submit Suggestion
-                </button>
-            </form>
-        </section>
+<div class="player-controls">
+<button class="control-btn" id="play-btn"><i class="fas fa-play"></i></button>
+<button class="control-btn" id="pause-btn"><i class="fas fa-pause"></i></button>
+<button class="control-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
+<button class="control-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
+<button class="control-btn" id="restart-btn"><i class="fas fa-redo"></i></button>
+</div>
 
-        <footer>
-            <p>&copy; 2023 Audiobook Haven. All rights reserved.</p>
-        </footer>
-    </div>
+<div class="text-display" id="text-display">
+<!-- Text will be populated by JavaScript -->
+</div>
+</div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Audio player elements
-            const audio = document.getElementById('audio-player');
-            const playPauseBtn = document.getElementById('play-pause');
-            const muteBtn = document.getElementById('mute');
-            const progressContainer = document.getElementById('progress-container');
-            const progress = document.getElementById('progress');
-            const currentTimeEl = document.getElementById('current-time');
-            const durationEl = document.getElementById('duration');
-            const transcriptContainer = document.getElementById('transcript');
-            
-            // Audiobook cards
-            const cards = document.querySelectorAll('.card');
-            
-            // Form
-            const form = document.getElementById('audiobook-form');
-            
-            // Load first audiobook's transcript
-            loadTranscript('https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/Audiotes.json');
-            
-            // Play/Pause functionality
-            playPauseBtn.addEventListener('click', function() {
-                if (audio.paused) {
-                    audio.play();
-                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    audio.pause();
-                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            });
-            
-            // Mute functionality
-            muteBtn.addEventListener('click', function() {
-                audio.muted = !audio.muted;
-                muteBtn.innerHTML = audio.muted ? 
-                    '<i class="fas fa-volume-mute"></i>' : 
-                    '<i class="fas fa-volume-up"></i>';
-            });
-            
-            // Update progress bar
-            audio.addEventListener('timeupdate', function() {
-                const currentTime = audio.currentTime;
-                const duration = audio.duration;
-                const progressPercent = (currentTime / duration) * 100;
-                
-                progress.style.width = `${progressPercent}%`;
-                
-                // Format time for display
-                currentTimeEl.textContent = formatTime(currentTime);
-                
-                if (!isNaN(duration)) {
-                    durationEl.textContent = formatTime(duration);
-                }
-                
-                // Highlight transcript text
-                highlightTranscript(currentTime);
-            });
-            
-            // Click on progress bar to seek
-            progressContainer.addEventListener('click', function(e) {
-                const width = this.clientWidth;
-                const clickX = e.offsetX;
-                const duration = audio.duration;
-                
-                audio.currentTime = (clickX / width) * duration;
-            });
-            
-            // Format time in minutes and seconds
-            function formatTime(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-            }
-            
-            // Load transcript from JSON
-            function loadTranscript(jsonUrl) {
-                fetch(jsonUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        let transcriptHTML = '';
-                        data.forEach(item => {
-                            transcriptHTML += `<p data-start="${item.start}" data-end="${item.end}">${item.text}</p>`;
-                        });
-                        transcriptContainer.innerHTML = transcriptHTML;
-                    })
-                    .catch(error => {
-                        console.error('Error loading transcript:', error);
-                        transcriptContainer.innerHTML = '<p>Unable to load transcript. Please try again later.</p>';
-                    });
-            }
-            
-            // Highlight transcript based on current time
-            function highlightTranscript(currentTime) {
-                const paragraphs = transcriptContainer.querySelectorAll('p');
-                
-                paragraphs.forEach(p => {
-                    const start = parseFloat(p.getAttribute('data-start'));
-                    const end = parseFloat(p.getAttribute('data-end'));
-                    
-                    if (currentTime >= start && currentTime <= end) {
-                        p.classList.add('highlight');
-                        // Scroll to the highlighted paragraph
-                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else {
-                        p.classList.remove('highlight');
-                    }
-                });
-            }
-            
-            // Card click event to change audiobook
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const audioUrl = this.getAttribute('data-audio');
-                    const jsonUrl = this.getAttribute('data-json');
-                    
-                    if (audioUrl && jsonUrl) {
-                        // Update audio source
-                        audio.src = audioUrl;
-                        
-                        // Reset player
-                        audio.currentTime = 0;
-                        progress.style.width = '0%';
-                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                        
-                        // Load new transcript
-                        loadTranscript(jsonUrl);
-                        
-                        // Update book info
-                        const title = this.querySelector('.card-title').textContent;
-                        const author = this.querySelector('.card-author').textContent;
-                        
-                        document.querySelector('.book-title').textContent = title;
-                        document.querySelector('.book-author').textContent = `By ${author}`;
-                        
-                        // Play the new audio
-                        audio.play();
-                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                    }
-                });
-            });
-            
-            // Form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const formData = {
-                    title: document.getElementById('title').value,
-                    author: document.getElementById('author').value,
-                    genre: document.getElementById('genre').value,
-                    description: document.getElementById('description').value
-                };
-                
-                // In a real application, you would send this data to a server
-                console.log('Form submitted:', formData);
-                
-                // Show success message
-                alert('Thank you for your suggestion! We will review it soon.');
-                
-                // Reset form
-                form.reset();
-            });
-            
-            // Initialize first audiobook
-            audio.load();
-        });
-    </script>
+<div class="cards-section">
+<h2 class="section-title">Audiobook Collection</h2>
+<div class="audiobook-cards" id="audiobook-cards">
+<!-- Cards will be populated by JavaScript -->
+</div>
+
+<div class="form-section">
+<h2 class="section-title">Request an Audiobook</h2>
+<form id="audiobook-form">
+<div class="form-grid">
+<div class="form-group">
+<label for="title">Book Title</label>
+<input type="text" id="title" required>
+</div>
+<div class="form-group">
+<label for="author">Author</label>
+<input type="text" id="author" required>
+</div>
+<div class="form-group">
+<label for="genre">Genre</label>
+<select id="genre">
+<option value="fiction">Fiction</option>
+<option value="non-fiction">Non-Fiction</option>
+<option value="sci-fi">Science Fiction</option>
+<option value="fantasy">Fantasy</option>
+<option value="mystery">Mystery</option>
+<option value="biography">Biography</option>
+</select>
+</div>
+<div class="form-group">
+<label for="email">Your Email</label>
+<input type="email" id="email" required>
+</div>
+</div>
+<div class="form-group">
+<label for="message">Additional Notes</label>
+<textarea id="message"></textarea>
+</div>
+<button type="submit" class="submit-btn">Submit Request</button>
+</form>
+</div>
+</div>
+</div>
+
+<footer>
+<p>&copy; 2023 AudioVerse. All rights reserved.</p>
+<p>Audio simulation for demonstration purposes. </p>
+</footer>
+</div>
+
+<script>
+// Sample JSON data with timestamps and text
+const audiobookData = {
+"title": "The Silent Echo",
+"author": "Jonathan Miles",
+"cover": "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+"audio": "demo",
+"text": [
+{"start": 0, "end": 4, "content": "The forest was silent that morning, a deep and profound silence that seemed to swallow all sound."},
+{"start": 4, "end": 8, "content": "It was in this silence that Emma first heard the echo, a faint whisper that seemed to come from nowhere and everywhere at once."},
+{"start": 8, "end": 12, "content": "She stopped, her breath catching in her throat, and listened intently. There it was again, a little clearer this time."},
+{"start": 12, "end": 16, "content": "It sounded like her name, spoken in a voice she almost recognized. A chill ran down her spine despite the warmth of the morning sun."},
+{"start": 16, "end": 20, "content": "Emma had been walking these woods for twenty years, since she was a child playing among these ancient oaks and pines."},
+{"start": 20, "end": 24, "content": "She knew every path, every clearing, every sound these woods made. But this was new, and unfamiliar."},
+{"start": 24, "end": 28, "content": "The voice called again, clearer now, and she found herself moving toward it, drawn by a curiosity that overpowered her fear."},
+{"start": 28, "end": 32, "content": "She moved off the path, pushing through underbrush that grabbed at her jeans like pleading hands."},
+{"start": 32, "end": 36, "content": "The voice grew louder, more distinct, and now she was certain—it was her grandmother's voice, though her grandmother had passed away five years ago."}
+]
+};
+
+// Sample audiobook collection
+const audiobooks = [
+{
+id: 1,
+title: "The Silent Echo",
+author: "Jonathan Miles",
+cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "4h 22m"
+},
+{
+id: 2,
+title: "Ocean's Whisper",
+author: "Maria Jensen",
+cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "5h 45m"
+},
+{
+id: 3,
+title: "The Midnight Library",
+author: "Matt Haig",
+cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "6h 17m"
+},
+{
+id: 4,
+title: "Desert Stars",
+author: "Ahmed Al-Mansoori",
+cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "7h 08m"
+}
+];
+
+// DOM Elements
+const audioPlayer = document.getElementById('audio-player');
+const textDisplay = document.getElementById('text-display');
+const playBtn = document.getElementById('play-btn');
+const pauseBtn = document.getElementById('pause-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const restartBtn = document.getElementById('restart-btn');
+const audiobookCards = document.getElementById('audiobook-cards');
+const audiobookForm = document.getElementById('audiobook-form');
+const audioButtons = document.querySelectorAll('.audio-btn');
+const progressBar = document.getElementById('progress-bar');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
+
+// Demo mode variables
+let isPlaying = false;
+let currentTime = 0;
+let duration = 36; // 36 seconds for demo
+let progressInterval;
+
+// Initialize the player
+function initPlayer() {
+// Display text
+let textHTML = '';
+audiobookData.text.forEach(fragment => {
+textHTML += `<p data-start="${fragment.start}" data-end="${fragment.end}">${fragment.content}</p>`;
+});
+textDisplay.innerHTML = textHTML;
+
+// Create audiobook cards
+let cardsHTML = '';
+audiobooks.forEach(book => {
+cardsHTML += `
+<div class="card" data-id="${book.id}">
+<img src="${book.cover}" alt="${book.title}" class="card-img">
+<div class="card-content">
+<h3 class="card-title">${book.title}</h3>
+<p class="card-author">By ${book.author}</p>
+<div class="card-duration">
+<span><i class="fas fa-headphones"></i> Audiobook</span>
+<span>${book.duration}</span>
+</div>
+</div>
+</div>
+`;
+});
+audiobookCards.innerHTML = cardsHTML;
+
+// Set initial time display
+updateTimeDisplay();
+}
+
+// Simulate audio playback
+function simulatePlayback() {
+if (isPlaying) {
+clearInterval(progressInterval);
+return;
+}
+
+isPlaying = true;
+playBtn.querySelector('i').className = 'fas fa-pause';
+
+progressInterval = setInterval(() => {
+if (currentTime < duration) {
+currentTime += 0.1;
+updateProgress();
+highlightText(currentTime);
+} else {
+simulatePause();
+currentTime = 0;
+updateProgress();
+}
+}, 100);
+}
+
+function simulatePause() {
+isPlaying = false;
+clearInterval(progressInterval);
+playBtn.querySelector('i').className = 'fas fa-play';
+}
+
+function updateProgress() {
+const progressPercent = (currentTime / duration) * 100;
+progressBar.style.width = `${progressPercent}%`;
+updateTimeDisplay();
+}
+
+function updateTimeDisplay() {
+const formatTime = (seconds) => {
+const mins = Math.floor(seconds / 60);
+const secs = Math.floor(seconds % 60);
+return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+};
+
+currentTimeEl.textContent = formatTime(currentTime);
+durationEl.textContent = formatTime(duration);
+}
+
+// Highlight text based on current time
+function highlightText(currentTime) {
+const paragraphs = textDisplay.querySelectorAll('p');
+paragraphs.forEach(p => {
+const start = parseFloat(p.getAttribute('data-start'));
+const end = parseFloat(p.getAttribute('data-end'));
+
+if (currentTime >= start && currentTime < end) {
+p.classList.add('highlight');
+// Scroll to the highlighted paragraph
+p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+} else {
+p.classList.remove('highlight');
+}
+});
+}
+
+// Switch audio source
+function switchAudioSource(source) {
+// In a real implementation, this would change the audio source
+simulatePause();
+currentTime = 0;
+updateProgress();
+
+// Update active button
+audioButtons.forEach(btn => {
+if (btn.getAttribute('data-audio') === source) {
+btn.classList.add('active');
+} else {
+btn.classList.remove('active');
+}
+});
+
+// Show a message about the selected audio
+const statusMessage = document.createElement('div');
+statusMessage.className = 'status-message warning';
+statusMessage.innerHTML = `<i class="fas fa-info-circle"></i> Selected ${source}. In a real implementation, this would load the actual audio file.`;
+
+// Remove any existing status message
+const existingMessage = document.querySelector('.status-message');
+if (existingMessage) {
+existingMessage.remove();
+}
+
+// Insert after the audio selection buttons
+document.querySelector('.audio-selection').after(statusMessage);
+}
+
+// Event Listeners
+playBtn.addEventListener('click', () => {
+if (isPlaying) {
+simulatePause();
+} else {
+simulatePlayback();
+}
+});
+
+pauseBtn.addEventListener('click', () => {
+simulatePause();
+});
+
+prevBtn.addEventListener('click', () => {
+currentTime = Math.max(0, currentTime - 10);
+updateProgress();
+highlightText(currentTime);
+});
+
+nextBtn.addEventListener('click', () => {
+currentTime = Math.min(duration, currentTime + 10);
+updateProgress();
+highlightText(currentTime);
+});
+
+restartBtn.addEventListener('click', () => {
+currentTime = 0;
+updateProgress();
+highlightText(currentTime);
+if (isPlaying) {
+simulatePlayback();
+}
+});
+
+// Audio selection buttons
+audioButtons.forEach(btn => {
+btn.addEventListener('click', () => {
+switchAudioSource(btn.getAttribute('data-audio'));
+});
+});
+
+// Progress bar seeking
+progressBar.parentElement.addEventListener('click', (e) => {
+const rect = progressBar.parentElement.getBoundingClientRect();
+const clickX = e.clientX - rect.left;
+const width = rect.width;
+currentTime = (clickX / width) * duration;
+updateProgress();
+highlightText(currentTime);
+});
+
+audiobookForm.addEventListener('submit', (e) => {
+e.preventDefault();
+alert('Thank you for your request! We will consider adding this audiobook to our collection.');
+audiobookForm.reset();
+});
+
+// Initialize the page
+initPlayer();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AudioVerse - Modern Audiobook Experience</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+background: linear-gradient(135deg, #1a2a6c, #4facfe, #fdbb2d);
+color: #fff;
+min-height: 100vh;
+padding: 20px;
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+}
+
+header {
+text-align: center;
+padding: 30px 0;
+}
+
+header h1 {
+font-size: 3.5rem;
+margin-bottom: 10px;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header p {
+font-size: 1.2rem;
+opacity: 0.9;
+max-width: 600px;
+margin: 0 auto;
+}
+
+.main-content {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 30px;
+margin-top: 30px;
+}
+
+@media (max-width: 900px) {
+.main-content {
+grid-template-columns: 1fr;
+}
+}
+
+/* Player Section */
+.player-section {
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+border-radius: 20px;
+padding: 25px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+font-size: 1.8rem;
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.player-container {
+text-align: center;
+}
+
+.book-cover {
+width: 250px;
+height: 250px;
+border-radius: 15px;
+object-fit: cover;
+margin-bottom: 20px;
+box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+transition: transform 0.3s ease;
+}
+
+.book-cover:hover {
+transform: scale(1.03);
+}
+
+.book-title {
+font-size: 1.5rem;
+margin-bottom: 10px;
+}
+
+.book-author {
+font-size: 1.1rem;
+opacity: 0.8;
+margin-bottom: 20px;
+}
+
+.audio-player {
+width: 100%;
+margin: 20px 0;
+border-radius: 10px;
+background: rgba(0, 0, 0, 0.2);
+}
+
+.player-controls {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-top: 15px;
+}
+
+.control-btn {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.2);
+border: none;
+color: white;
+font-size: 1.2rem;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+background: rgba(255, 255, 255, 0.3);
+transform: scale(1.1);
+}
+
+/* Text Display */
+.text-display {
+background: rgba(0, 0, 0, 0.2);
+border-radius: 15px;
+padding: 20px;
+height: 300px;
+overflow-y: auto;
+margin-top: 20px;
+text-align: left;
+font-size: 1.1rem;
+line-height: 1.6;
+}
+
+.highlight {
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+color: #000;
+padding: 2px 4px;
+border-radius: 4px;
+transition: all 0.3s ease;
+}
+
+/* Cards Section */
+.cards-section {
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.audiobook-cards {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 20px;
+}
+
+.card {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 15px;
+overflow: hidden;
+transition: transform 0.4s ease, box-shadow 0.4s ease;
+transform-style: preserve-3d;
+perspective: 1000px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+cursor: pointer;
+}
+
+.card:hover {
+transform: translateY(-10px) rotateX(5deg);
+box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-img {
+width: 100%;
+height: 180px;
+object-fit: cover;
+}
+
+.card-content {
+padding: 15px;
+}
+
+.card-title {
+font-size: 1.2rem;
+margin-bottom: 8px;
+color: #f6d365;
+}
+
+.card-author {
+font-size: 0.9rem;
+opacity: 0.8;
+margin-bottom: 15px;
+}
+
+.card-duration {
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 0.9rem;
+}
+
+/* Form Section */
+.form-section {
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+border-radius: 20px;
+padding: 25px;
+margin-top: 30px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.form-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 20px;
+}
+
+.form-group {
+margin-bottom: 15px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+width: 100%;
+padding: 12px 15px;
+border: none;
+border-radius: 10px;
+background: rgba(255, 255, 255, 0.1);
+color: white;
+font-size: 1rem;
+}
+
+.form-group textarea {
+height: 120px;
+resize: vertical;
+}
+
+.submit-btn {
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+color: #000;
+border: none;
+padding: 12px 25px;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: transform 0.3s ease;
+}
+
+.submit-btn:hover {
+transform: translateY(-3px);
+}
+
+/* Footer */
+footer {
+text-align: center;
+padding: 30px 0;
+margin-top: 50px;
+opacity: 0.7;
+}
+
+/* Audio Selection */
+.audio-selection {
+margin: 15px 0;
+text-align: center;
+}
+
+.audio-btn {
+background: rgba(255, 255, 255, 0.2);
+border: none;
+color: white;
+padding: 10px 15px;
+border-radius: 8px;
+margin: 0 5px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.audio-btn:hover {
+background: rgba(255, 255, 255, 0.3);
+}
+
+.audio-btn.active {
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+color: #000;
+}
+
+/* Status Message */
+.status-message {
+padding: 10px;
+margin: 10px 0;
+border-radius: 8px;
+text-align: center;
+background: rgba(0, 0, 0, 0.2);
+}
+
+.success {
+background: rgba(76, 175, 80, 0.2);
+color: #a5d6a7;
+}
+
+.warning {
+background: rgba(255, 152, 0, 0.2);
+color: #ffe082;
+}
+
+/* Demo Audio Notice */
+.demo-notice {
+background: rgba(255, 152, 0, 0.3);
+border-left: 4px solid #ff9800;
+padding: 15px;
+margin: 15px 0;
+border-radius: 8px;
+}
+
+/* Progress Bar */
+.progress-container {
+width: 100%;
+height: 8px;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 4px;
+margin: 15px 0;
+overflow: hidden;
+}
+
+.progress-bar {
+height: 100%;
+background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+border-radius: 4px;
+width: 0%;
+transition: width 0.3s ease;
+}
+
+/* Time Display */
+.time-display {
+display: flex;
+justify-content: space-between;
+margin-top: 5px;
+font-size: 0.9rem;
+opacity: 0.8;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+width: 8px;
+}
+
+::-webkit-scrollbar-track {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.3);
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: rgba(255, 255, 255, 0.4);
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>AudioVerse</h1>
+<p>Immerse yourself in captivating stories with our premium audiobook collection</p>
+</header>
+
+<div class="main-content">
+<div class="player-section">
+<h2 class="section-title">Now Playing</h2>
+<div class="player-container">
+<img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Book Cover" class="book-cover">
+<h3 class="book-title">The Silent Echo</h3>
+<p class="book-author">By Jonathan Miles</p>
+
+<div class="demo-notice">
+<p><i class="fas fa-info-circle"></i> <strong>Demo Mode</strong>: Using simulated audio for demonstration. To use your own audio files, host them online and update the URLs in the code.</p>
+</div>
+
+<div class="audio-selection">
+<button class="audio-btn active" data-audio="demo">Demo Audio 1</button>
+<button class="audio-btn" data-audio="demo2">Demo Audio 2</button>
+</div>
+
+<div class="progress-container">
+<div class="progress-bar" id="progress-bar"></div>
+</div>
+
+<div class="time-display">
+<span id="current-time">0:00</span>
+<span id="duration">0:00</span>
+</div>
+
+<div class="player-controls">
+<button class="control-btn" id="play-btn"><i class="fas fa-play"></i></button>
+<button class="control-btn" id="pause-btn"><i class="fas fa-pause"></i></button>
+<button class="control-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
+<button class="control-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
+<button class="control-btn" id="restart-btn"><i class="fas fa-redo"></i></button>
+</div>
+
+<div class="text-display" id="text-display">
+<!-- Text will be populated by JavaScript -->
+</div>
+</div>
+</div>
+
+<div class="cards-section">
+<h2 class="section-title">Audiobook Collection</h2>
+<div class="audiobook-cards" id="audiobook-cards">
+<!-- Cards will be populated by JavaScript -->
+</div>
+
+<div class="form-section">
+<h2 class="section-title">Request an Audiobook</h2>
+<form id="audiobook-form">
+<div class="form-grid">
+<div class="form-group">
+<label for="title">Book Title</label>
+<input type="text" id="title" required>
+</div>
+<div class="form-group">
+<label for="author">Author</label>
+<input type="text" id="author" required>
+</div>
+<div class="form-group">
+<label for="genre">Genre</label>
+<select id="genre">
+<option value="fiction">Fiction</option>
+<option value="non-fiction">Non-Fiction</option>
+<option value="sci-fi">Science Fiction</option>
+<option value="fantasy">Fantasy</option>
+<option value="mystery">Mystery</option>
+<option value="biography">Biography</option>
+</select>
+</div>
+<div class="form-group">
+<label for="email">Your Email</label>
+<input type="email" id="email" required>
+</div>
+</div>
+<div class="form-group">
+<label for="message">Additional Notes</label>
+<textarea id="message"></textarea>
+</div>
+<button type="submit" class="submit-btn">Submit Request</button>
+</form>
+</div>
+</div>
+</div>
+
+<footer>
+<p>&copy; 2023 AudioVerse. All rights reserved.</p>
+<p>Audio simulation for demonstration purposes. </p>
+</footer>
+</div>
+
+<script>
+// Sample JSON data with timestamps and text
+const audiobookData = {
+"title": "The Silent Echo",
+"author": "Jonathan Miles",
+"cover": "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+"audio": "demo",
+"text": [
+{"start": 0, "end": 4, "content": "The forest was silent that morning, a deep and profound silence that seemed to swallow all sound."},
+{"start": 4, "end": 8, "content": "It was in this silence that Emma first heard the echo, a faint whisper that seemed to come from nowhere and everywhere at once."},
+{"start": 8, "end": 12, "content": "She stopped, her breath catching in her throat, and listened intently. There it was again, a little clearer this time."},
+{"start": 12, "end": 16, "content": "It sounded like her name, spoken in a voice she almost recognized. A chill ran down her spine despite the warmth of the morning sun."},
+{"start": 16, "end": 20, "content": "Emma had been walking these woods for twenty years, since she was a child playing among these ancient oaks and pines."},
+{"start": 20, "end": 24, "content": "She knew every path, every clearing, every sound these woods made. But this was new, and unfamiliar."},
+{"start": 24, "end": 28, "content": "The voice called again, clearer now, and she found herself moving toward it, drawn by a curiosity that overpowered her fear."},
+{"start": 28, "end": 32, "content": "She moved off the path, pushing through underbrush that grabbed at her jeans like pleading hands."},
+{"start": 32, "end": 36, "content": "The voice grew louder, more distinct, and now she was certain—it was her grandmother's voice, though her grandmother had passed away five years ago."}
+]
+};
+
+// Sample audiobook collection
+const audiobooks = [
+{
+id: 1,
+title: "The Silent Echo",
+author: "Jonathan Miles",
+cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "4h 22m"
+},
+{
+id: 2,
+title: "Ocean's Whisper",
+author: "Maria Jensen",
+cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "5h 45m"
+},
+{
+id: 3,
+title: "The Midnight Library",
+author: "Matt Haig",
+cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "6h 17m"
+},
+{
+id: 4,
+title: "Desert Stars",
+author: "Ahmed Al-Mansoori",
+cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+duration: "7h 08m"
+}
+];
+
+// DOM Elements
+const audioPlayer = document.getElementById('audio-player');
+const textDisplay = document.getElementById('text-display');
+const playBtn = document.getElementById('play-btn');
+const pauseBtn = document.getElementById('pause-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const restartBtn = document.getElementById('restart-btn');
+const audiobookCards = document.getElementById('audiobook-cards');
+const audiobookForm = document.getElementById('audiobook-form');
+const audioButtons = document.querySelectorAll('.audio-btn');
+const progressBar = document.getElementById('progress-bar');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
+
+// Demo mode variables
+let isPlaying = false;
+let currentTime = 0;
+let duration = 36; // 36 seconds for demo
+let progressInterval;
+
+// Initialize the player
+function initPlayer() {
+// Display text
+let textHTML = '';
+audiobookData.text.forEach(fragment => {
+textHTML += `<p data-start="${fragment.start}" data-end="${fragment.end}">${fragment.content}</p>`;
+});
+textDisplay.innerHTML = textHTML;
+
+// Create audiobook cards
+let cardsHTML = '';
+audiobooks.forEach(book => {
+cardsHTML += `
+<div class="card" data-id="${book.id}">
+<img src="${book.cover}" alt="${book.title}" class="card-img">
+<div class="card-content">
+<h3 class="card-title">${book.title}</h3>
+<p class="card-author">By ${book.author}</p>
+<div class="card-duration">
+<span><i class="fas fa-headphones"></i> Audiobook</span>
+<span>${book.duration}</span>
+</div>
+</div>
+</div>
+`;
+});
+audiobookCards.innerHTML = cardsHTML;
+
+// Set initial time display
+updateTimeDisplay();
+}
+
+// Simulate audio playback
+function simulatePlayback() {
+if (isPlaying) {
+clearInterval(progressInterval);
+return;
+}
+
+isPlaying = true;
+playBtn.querySelector('i').className = 'fas fa-pause';
+
+progressInterval = setInterval(() => {
+if (currentTime < duration) {
+currentTime += 0.1;
+updateProgress();
+highlightText(currentTime);
+} else {
+simulatePause();
+currentTime = 0;
+updateProgress();
+}
+}, 100);
+}
+
+function simulatePause() {
+isPlaying = false;
+clearInterval(progressInterval);
+playBtn.querySelector('i').className = 'fas fa-play';
+}
+
+function updateProgress() {
+const progressPercent = (currentTime / duration) * 100;
+progressBar.style.width = `${progressPercent}%`;
+updateTimeDisplay();
+}
+
+function updateTimeDisplay() {
+const formatTime = (seconds) => {
+const mins = Math.floor(seconds / 60);
+const secs = Math.floor(seconds % 60);
+return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+};
+
+currentTimeEl.textContent = formatTime(currentTime);
+durationEl.textContent = formatTime(duration);
+}
+
+// Highlight text based on current time
+function highlightText(currentTime) {
+const paragraphs = textDisplay.querySelectorAll('p');
+paragraphs.forEach(p => {
+const start = parseFloat(p.getAttribute('data-start'));
+const end = parseFloat(p.getAttribute('data-end'));
+
+if (currentTime >= start && currentTime < end) {
+p.classList.add('highlight');
+// Scroll to the highlighted paragraph
+p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+} else {
+p.classList.remove('highlight');
+}
+});
+}
+
+// Switch audio source
+function switchAudioSource(source) {
+// In a real implementation, this would change the audio source
+simulatePause();
+currentTime = 0;
+updateProgress();
+
+// Update active button
+audioButtons.forEach(btn => {
+if (btn.getAttribute('data-audio') === source) {
+btn.classList.add('active');
+} else {
+btn.classList.remove('active');
+}
+});
+
+// Show a message about the selected audio
+const statusMessage = document.createElement('div');
+statusMessage.className = 'status-message warning';
+statusMessage.innerHTML = `<i class="fas fa-info-circle"></i> Selected ${source}. In a real implementation, this would load the actual audio file.`;
+
+// Remove any existing status message
+const existingMessage = document.querySelector('.status-message');
+if (existingMessage) {
+existingMessage.remove();
+}
+
+// Insert after the audio selection buttons
+document.querySelector('.audio-selection').after(statusMessage);
+}
+
+// Event Listeners
+playBtn.addEventListener('click', () => {
+if (isPlaying) {
+simulatePause();
+} else {
+simulatePlayback();
+}
+});
+
+pauseBtn.addEventListener('click', () => {
+simulatePause();
+});
+
+prevBtn.addEventListener('click', () => {
+currentTime = Math.max(0, currentTime - 10);
+updateProgress();
+highlightText(currentTime);
+});
+
+nextBtn.addEventListener('click', () => {
+currentTime = Math.min(duration, currentTime + 10);
+updateProgress();
+highlightText(currentTime);
+});
+
+restartBtn.addEventListener('click', () => {
+currentTime = 0;
+updateProgress();
+highlightText(currentTime);
+if (isPlaying) {
+simulatePlayback();
+}
+});
+
+// Audio selection buttons
+audioButtons.forEach(btn => {
+btn.addEventListener('click', () => {
+switchAudioSource(btn.getAttribute('data-audio'));
+});
+});
+
+// Progress bar seeking
+progressBar.parentElement.addEventListener('click', (e) => {
+const rect = progressBar.parentElement.getBoundingClientRect();
+const clickX = e.clientX - rect.left;
+const width = rect.width;
+currentTime = (clickX / width) * duration;
+updateProgress();
+highlightText(currentTime);
+});
+
+audiobookForm.addEventListener('submit', (e) => {
+e.preventDefault();
+alert('Thank you for your request! We will consider adding this audiobook to our collection.');
+audiobookForm.reset();
+});
+
+// Initialize the page
+initPlayer();
+</script>
 </body>
 </html>
