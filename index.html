@@ -383,7 +383,7 @@
     <div class="container">
         <header>
             <h1>AudioVerse</h1>
-            <p>Immerse yourself in captivating stories </p>
+            <p>Immerse yourself in captivating stories with our premium audiobook collection</p>
         </header>
 
         <div class="main-content">
@@ -395,7 +395,7 @@
                     <p class="book-author">By Jonathan Miles</p>
                     
                     <div class="demo-notice">
-                        <p><i class="fas fa-info-circle"></i> <strong>Demo Mode</strong>: Using simulated audio for demonstration. Debugging progress</p>
+                        <p><i class="fas fa-info-circle"></i> <strong>Demo Mode</strong>: Using simulated audio for demonstration. To use your own audio files, host them online and update the URLs in the code.</p>
                     </div>
                     
                     <div class="audio-selection">
@@ -432,7 +432,19 @@
                     <!-- Cards will be populated by JavaScript -->
                 </div>
                 
-                <div class="form-section">   
+                <div class="form-section">
+                    <h2 class="section-title">Hosting Instructions</h2>
+                    <div class="demo-notice">
+                        <h3><i class="fas fa-cloud-upload-alt"></i> How to Host Your Audio Files:</h3>
+                        <ol>
+                            <li>Upload your audio files to a hosting service (Google Drive, Dropbox, etc.)</li>
+                            <li>Get the direct download link (not the view link)</li>
+                            <li>Replace the demo audio URLs in the JavaScript code with your links</li>
+                            <li>Ensure the files are publicly accessible</li>
+                        </ol>
+                        <p>For Google Drive: Share file → Change to "Anyone with the link" → Copy the ID from the URL</p>
+                    </div>
+                    
                     <h2 class="section-title">Request an Audiobook</h2>
                     <form id="audiobook-form">
                         <div class="form-grid">
@@ -567,4 +579,173 @@
                         <div class="card-content">
                             <h3 class="card-title">${book.title}</h3>
                             <p class="card-author">By ${book.author}</p>
-           
+                            <div class="card-duration">
+                                <span><i class="fas fa-headphones"></i> Audiobook</span>
+                                <span>${book.duration}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            audiobookCards.innerHTML = cardsHTML;
+            
+            // Set initial time display
+            updateTimeDisplay();
+        }
+
+        // Simulate audio playback
+        function simulatePlayback() {
+            if (isPlaying) {
+                clearInterval(progressInterval);
+                return;
+            }
+            
+            isPlaying = true;
+            playBtn.querySelector('i').className = 'fas fa-pause';
+            
+            progressInterval = setInterval(() => {
+                if (currentTime < duration) {
+                    currentTime += 0.1;
+                    updateProgress();
+                    highlightText(currentTime);
+                } else {
+                    simulatePause();
+                    currentTime = 0;
+                    updateProgress();
+                }
+            }, 100);
+        }
+
+        function simulatePause() {
+            isPlaying = false;
+            clearInterval(progressInterval);
+            playBtn.querySelector('i').className = 'fas fa-play';
+        }
+
+        function updateProgress() {
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            updateTimeDisplay();
+        }
+
+        function updateTimeDisplay() {
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            };
+            
+            currentTimeEl.textContent = formatTime(currentTime);
+            durationEl.textContent = formatTime(duration);
+        }
+
+        // Highlight text based on current time
+        function highlightText(currentTime) {
+            const paragraphs = textDisplay.querySelectorAll('p');
+            paragraphs.forEach(p => {
+                const start = parseFloat(p.getAttribute('data-start'));
+                const end = parseFloat(p.getAttribute('data-end'));
+                
+                if (currentTime >= start && currentTime < end) {
+                    p.classList.add('highlight');
+                    // Scroll to the highlighted paragraph
+                    p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    p.classList.remove('highlight');
+                }
+            });
+        }
+
+        // Switch audio source
+        function switchAudioSource(source) {
+            // In a real implementation, this would change the audio source
+            simulatePause();
+            currentTime = 0;
+            updateProgress();
+            
+            // Update active button
+            audioButtons.forEach(btn => {
+                if (btn.getAttribute('data-audio') === source) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Show a message about the selected audio
+            const statusMessage = document.createElement('div');
+            statusMessage.className = 'status-message warning';
+            statusMessage.innerHTML = `<i class="fas fa-info-circle"></i> Selected ${source}. In a real implementation, this would load the actual audio file.`;
+            
+            // Remove any existing status message
+            const existingMessage = document.querySelector('.status-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Insert after the audio selection buttons
+            document.querySelector('.audio-selection').after(statusMessage);
+        }
+
+        // Event Listeners
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                simulatePause();
+            } else {
+                simulatePlayback();
+            }
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            simulatePause();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentTime = Math.max(0, currentTime - 10);
+            updateProgress();
+            highlightText(currentTime);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentTime = Math.min(duration, currentTime + 10);
+            updateProgress();
+            highlightText(currentTime);
+        });
+
+        restartBtn.addEventListener('click', () => {
+            currentTime = 0;
+            updateProgress();
+            highlightText(currentTime);
+            if (isPlaying) {
+                simulatePlayback();
+            }
+        });
+
+        // Audio selection buttons
+        audioButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchAudioSource(btn.getAttribute('data-audio'));
+            });
+        });
+
+        // Progress bar seeking
+        progressBar.parentElement.addEventListener('click', (e) => {
+            const rect = progressBar.parentElement.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            currentTime = (clickX / width) * duration;
+            updateProgress();
+            highlightText(currentTime);
+        });
+
+        audiobookForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your request! We will consider adding this audiobook to our collection.');
+            audiobookForm.reset();
+        });
+
+        // Initialize the page
+        initPlayer();
+    </script>
+</body>
+</html>
