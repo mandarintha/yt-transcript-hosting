@@ -5,19 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audiobook Modern - Nikmati Cerita dengan Pengalaman Mendalam</title>
     <style>
-        /* Variabel CSS untuk tema konsisten */
-        :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #6e9cd2;
-            --accent-color: #ff6b6b;
-            --text-color: #333;
-            --light-text: #f8f9fa;
-            --background-color: #f5f7fa;
-            --card-background: #ffffff;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-        }
-
-        /* Reset dan gaya dasar */
         * {
             margin: 0;
             padding: 0;
@@ -26,67 +13,157 @@
         }
 
         body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #1a2a6c, #4facfe, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--light-text);
-            padding: 1.5rem 0;
-            text-align: center;
-            box-shadow: 0 4px 12px var(--shadow-color);
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .tagline {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        /* Container utama */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
         }
 
-        /* Bagian judul populer dengan scroll horizontal */
-        .popular-section {
-            margin: 3rem 0;
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Player Section */
+        .player-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .section-title {
             font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            position: relative;
-            padding-bottom: 0.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background-color: var(--accent-color);
+        .player-container {
+            text-align: center;
+        }
+
+        .book-cover-large {
+            width: 250px;
+            height: 250px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover-large:hover {
+            transform: scale(1.03);
+        }
+
+        .book-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .book-author {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Text Display */
+        .text-display {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            color: #000;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        /* Cards Section */
+        .cards-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .books-container {
             display: flex;
             overflow-x: auto;
-            gap: 2rem;
-            padding: 1rem 0.5rem;
+            gap: 20px;
+            padding: 10px 5px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
@@ -96,23 +173,25 @@
         }
 
         .books-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
         }
 
         .books-container::-webkit-scrollbar-thumb {
-            background: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
         }
 
-        /* Kartu buku 3D */
+        .books-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .book-card {
             flex: 0 0 auto;
-            width: 250px;
-            height: 350px;
+            width: 200px;
+            height: 280px;
             perspective: 1000px;
             cursor: pointer;
-            margin-bottom: 1rem;
         }
 
         .card-inner {
@@ -132,25 +211,26 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 20px var(--shadow-color);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .card-front {
-            background-color: var(--card-background);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
         }
 
         .card-back {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--light-text);
+            background: linear-gradient(135deg, #1a2a6c, #4facfe);
+            color: white;
             transform: rotateY(180deg);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            padding: 15px;
             text-align: center;
         }
 
@@ -161,172 +241,168 @@
         }
 
         .book-info {
-            padding: 1rem;
+            padding: 15px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .book-title {
+        .book-title-small {
             font-weight: bold;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-size: 1rem;
         }
 
-        .book-author {
-            font-size: 0.9rem;
-            color: #666;
+        .book-author-small {
+            font-size: 0.8rem;
+            opacity: 0.8;
         }
 
-        /* Pemutar audio dan area teks */
-        .player-section {
-            background-color: var(--card-background);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 3rem 0;
-            box-shadow: 0 10px 20px var(--shadow-color);
-        }
-
-        .audio-player {
-            width: 100%;
-            margin-bottom: 1.5rem;
-        }
-
-        .text-display {
-            height: 300px;
-            overflow-y: auto;
-            padding: 1.5rem;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            background-color: #fafafa;
-        }
-
-        .highlight {
-            background-color: rgba(255, 107, 107, 0.3);
-            transition: background-color 0.3s ease;
-            padding: 0 2px;
-            border-radius: 3px;
-        }
-
-        /* Formulir pendaftaran */
+        /* Form Section */
         .subscription-form {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 3rem 2rem;
-            border-radius: 12px;
-            color: var(--light-text);
-            margin: 3rem 0;
-            box-shadow: 0 10px 20px var(--shadow-color);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .form-title {
             font-size: 1.8rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .form-input {
             width: 100%;
-            padding: 1rem;
+            padding: 12px 15px;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             font-size: 1rem;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .btn {
-            background-color: var(--accent-color);
-            color: white;
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            color: #000;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 6px;
+            padding: 12px 25px;
+            border-radius: 10px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: transform 0.3s ease;
             display: block;
             width: 100%;
-            font-weight: bold;
         }
 
         .btn:hover {
-            background-color: #ff5252;
+            transform: translateY(-3px);
         }
 
         /* Footer */
         footer {
-            background-color: #2c3e50;
-            color: var(--light-text);
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            padding: 30px 0;
+            margin-top: 50px;
+            opacity: 0.7;
         }
 
-        /* Responsivitas */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .book-card {
-                width: 200px;
-                height: 300px;
-            }
-            
-            .text-display {
-                height: 250px;
-                font-size: 1rem;
-            }
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">AudioNovel</div>
-        <div class="tagline">Immersive Audiobook Experience</div>
-    </header>
-
     <div class="container">
-        <!-- Bagian buku populer dengan scroll horizontal -->
-        <section class="popular-section">
-            <h2 class="section-title">Judul Populer</h2>
-            <div class="books-container">
-                <!-- Kartu buku akan di-generate oleh JavaScript -->
-            </div>
-        </section>
+        <header>
+            <h1>AudioNovel</h1>
+            <p>Immersive Audiobook Experience</p>
+        </header>
 
-        <!-- Pemutar audio dan teks -->
-        <section class="player-section">
-            <h2 class="section-title">Sekarang Diputar</h2>
-            <audio id="audioPlayer" class="audio-player" controls></audio>
-            <div id="textDisplay" class="text-display">
-                <!-- Teks akan diisi oleh JavaScript -->
-                Pilih buku dari koleksi untuk mulai mendengarkan...
-            </div>
-        </section>
+        <div class="main-content">
+            <!-- Player Section -->
+            <section class="player-section">
+                <h2 class="section-title">Sekarang Diputar</h2>
+                <div class="player-container">
+                    <img id="currentBookCover" class="book-cover-large" src="https://via.placeholder.com/250x350/1a2a6c/ffffff?text=Pilih+Buku" alt="Book Cover">
+                    <h3 id="currentBookTitle" class="book-title">Pilih buku dari koleksi</h3>
+                    <p id="currentBookAuthor" class="book-author">Penulis akan muncul di sini</p>
+                    
+                    <audio id="audioPlayer" class="audio-player" controls></audio>
+                    
+                    <div class="player-controls">
+                        <button class="control-btn" id="playBtn">▶</button>
+                        <button class="control-btn" id="pauseBtn">⏸</button>
+                        <button class="control-btn" id="restartBtn">↺</button>
+                    </div>
+                </div>
+                
+                <h3 class="section-title">Teks Sinkronisasi</h3>
+                <div id="textDisplay" class="text-display">
+                    Pilih buku dari koleksi untuk mulai mendengarkan...
+                </div>
+            </section>
 
-        <!-- Formulir pendaftaran -->
-        <section class="subscription-form">
-            <h2 class="form-title">Dapatkan Notifikasi Judul Baru</h2>
-            <form id="subscriptionForm">
-                <div class="form-group">
-                    <input type="text" class="form-input" placeholder="Nama Lengkap" required>
+            <!-- Cards Section -->
+            <section class="cards-section">
+                <h2 class="section-title">Koleksi Audiobook</h2>
+                <div class="books-container">
+                    <!-- Kartu buku akan di-generate oleh JavaScript -->
                 </div>
-                <div class="form-group">
-                    <input type="email" class="form-input" placeholder Alamat Email" required>
+
+                <!-- Formulir pendaftaran -->
+                <div class="subscription-form">
+                    <h2 class="form-title">Dapatkan Notifikasi Judul Baru</h2>
+                    <form id="subscriptionForm">
+                        <div class="form-group">
+                            <input type="text" class="form-input" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" placeholder="Alamat Email" required>
+                        </div>
+                        <button type="submit" class="btn">Berlangganan Sekarang</button>
+                    </form>
                 </div>
-                <button type="submit" class="btn">Berlangganan Sekarang</button>
-            </form>
-        </section>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2023 AudioNovel. All rights reserved.</p>
+        </footer>
     </div>
-
-    <footer>
-        <p>&copy; 2023 AudioNovel. All rights reserved.</p>
-    </footer>
 
     <script>
         // Data buku dengan referensi ke JSON dan MP3
@@ -334,21 +410,21 @@
             {
                 title: "Let It Be",
                 author: "The Beatles",
-                cover: "https://via.placeholder.com/250x350/4a6fa5/ffffff?text=Let+It+Be",
+                cover: "https://via.placeholder.com/250x350/1a2a6c/ffffff?text=Let+It+Be",
                 jsonUrl: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.json",
                 mp3Url: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3"
             },
             {
                 title: "Book 1",
                 author: "Unknown Author",
-                cover: "https://via.placeholder.com/250x350/6e9cd2/ffffff?text=Book+1",
+                cover: "https://via.placeholder.com/250x350/4facfe/ffffff?text=Book+1",
                 jsonUrl: "https://cdn.baobaobook.org/transcripts/book1.json",
                 mp3Url: "https://cdn.baobaobook.org/transcripts/book1.mp3"
             },
             {
                 title: "Baan Nitan Dek Dee",
                 author: "Thai Author",
-                cover: "https://via.placeholder.com/250x350/ff6b6b/ffffff?text=Thai+Book",
+                cover: "https://via.placeholder.com/250x350/fdbb2d/000000?text=Thai+Book",
                 jsonUrl: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.json",
                 mp3Url: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3"
             }
@@ -359,9 +435,16 @@
         const audioPlayer = document.getElementById('audioPlayer');
         const textDisplay = document.getElementById('textDisplay');
         const subscriptionForm = document.getElementById('subscriptionForm');
+        const currentBookCover = document.getElementById('currentBookCover');
+        const currentBookTitle = document.getElementById('currentBookTitle');
+        const currentBookAuthor = document.getElementById('currentBookAuthor');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const restartBtn = document.getElementById('restartBtn');
 
         // Variabel global untuk data transkrip saat ini
         let currentTranscription = [];
+        let currentBook = null;
 
         // Fungsi untuk membuat kartu buku
         function createBookCards() {
@@ -374,8 +457,8 @@
                         <div class="card-front">
                             <div class="book-cover" style="background-image: url('${book.cover}')"></div>
                             <div class="book-info">
-                                <div class="book-title">${book.title}</div>
-                                <div class="book-author">${book.author}</div>
+                                <div class="book-title-small">${book.title}</div>
+                                <div class="book-author-small">${book.author}</div>
                             </div>
                         </div>
                         <div class="card-back">
@@ -395,6 +478,14 @@
                 // Tampilkan status loading
                 textDisplay.innerHTML = "Memuat buku...";
                 
+                // Simpan buku saat ini
+                currentBook = book;
+                
+                // Perbarui tampilan
+                currentBookCover.src = book.cover;
+                currentBookTitle.textContent = book.title;
+                currentBookAuthor.textContent = book.author;
+                
                 // Muat data JSON
                 const response = await fetch(book.jsonUrl);
                 const data = await response.json();
@@ -408,8 +499,6 @@
                 // Render teks
                 renderText();
                 
-                // Putar audio
-                audioPlayer.play();
             } catch (error) {
                 console.error("Error loading book:", error);
                 textDisplay.innerHTML = "Terjadi kesalahan saat memuat buku. Silakan coba lagi.";
@@ -461,6 +550,26 @@
             alert('Terima kasih telah berlangganan! Anda akan menerima notifikasi judul baru.');
             subscriptionForm.reset();
         }
+
+        // Kontrol pemutar
+        playBtn.addEventListener('click', () => {
+            if (currentBook) {
+                audioPlayer.play();
+            } else {
+                alert('Silakan pilih buku terlebih dahulu');
+            }
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            audioPlayer.pause();
+        });
+
+        restartBtn.addEventListener('click', () => {
+            if (currentBook) {
+                audioPlayer.currentTime = 0;
+                audioPlayer.play();
+            }
+        });
 
         // Inisialisasi
         document.addEventListener('DOMContentLoaded', () => {
