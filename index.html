@@ -1,749 +1,478 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AudioVerse - Modern Audiobook Experience</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Audiobook Modern - Nikmati Cerita dengan Pengalaman Mendalam</title>
     <style>
+        /* Variabel CSS untuk tema konsisten */
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6e9cd2;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --background-color: #f5f7fa;
+            --card-background: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset dan gaya dasar */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #1a2a6c, #4facfe, #fdbb2d);
-            color: #fff;
-            min-height: 100vh;
-            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Container utama */
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem;
         }
 
-        header {
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Player Section */
-        .player-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        /* Bagian judul populer dengan scroll horizontal */
+        .popular-section {
+            margin: 3rem 0;
         }
 
         .section-title {
-            font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 0.5rem;
         }
 
-        .player-container {
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .books-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 2rem;
+            padding: 1rem 0.5rem;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .books-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .books-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .books-container::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+
+        /* Kartu buku 3D */
+        .book-card {
+            flex: 0 0 auto;
+            width: 250px;
+            height: 350px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .book-card:hover .card-inner {
+            transform: rotateY(15deg) rotateX(5deg) translateY(-10px);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+
+        .card-front {
+            background-color: var(--card-background);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
             text-align: center;
         }
 
         .book-cover {
-            width: 250px;
-            height: 250px;
-            border-radius: 15px;
-            object-fit: cover;
-            margin-bottom: 20px;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
+            height: 70%;
+            background-size: cover;
+            background-position: center;
         }
 
-        .book-cover:hover {
-            transform: scale(1.03);
+        .book-info {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .book-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
 
         .book-author {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Pemutar audio dan area teks */
+        .player-section {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 20px var(--shadow-color);
         }
 
         .audio-player {
             width: 100%;
-            margin: 20px 0;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
         }
 
-        .player-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .control-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        /* Text Display */
         .text-display {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            padding: 20px;
             height: 300px;
             overflow-y: auto;
-            margin-top: 20px;
-            text-align: left;
+            padding: 1.5rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            line-height: 1.8;
             font-size: 1.1rem;
-            line-height: 1.6;
+            background-color: #fafafa;
         }
 
         .highlight {
-            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            color: #000;
-            padding: 2px 4px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            background-color: rgba(255, 107, 107, 0.3);
+            transition: background-color 0.3s ease;
+            padding: 0 2px;
+            border-radius: 3px;
         }
 
-        /* Cards Section */
-        .cards-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Formulir pendaftaran */
+        .subscription-form {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            color: var(--light-text);
+            margin: 3rem 0;
+            box-shadow: 0 10px 20px var(--shadow-color);
         }
 
-        .audiobook-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .card-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .card-content {
-            padding: 15px;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: #f6d365;
-        }
-
-        .card-author {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        .card-duration {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        /* Form Section */
-        .form-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            margin-top: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 1.5rem;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 1rem;
             border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
             color: white;
-            font-size: 1rem;
-        }
-
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            color: #000;
             border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
+            padding: 1rem 2rem;
+            border-radius: 6px;
             font-size: 1rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: 100%;
+            font-weight: bold;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-3px);
+        .btn:hover {
+            background-color: #ff5252;
         }
 
         /* Footer */
         footer {
+            background-color: #2c3e50;
+            color: var(--light-text);
             text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            opacity: 0.7;
+            padding: 2rem 0;
+            margin-top: 3rem;
         }
 
-        /* Audio Selection */
-        .audio-selection {
-            margin: 15px 0;
-            text-align: center;
-        }
-
-        .audio-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .audio-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .audio-btn.active {
-            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            color: #000;
-        }
-
-        /* Status Message */
-        .status-message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .success {
-            background: rgba(76, 175, 80, 0.2);
-            color: #a5d6a7;
-        }
-
-        .warning {
-            background: rgba(255, 152, 0, 0.2);
-            color: #ffe082;
-        }
-
-        /* Demo Audio Notice */
-        .demo-notice {
-            background: rgba(255, 152, 0, 0.3);
-            border-left: 4px solid #ff9800;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* Time Display */
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 5px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.4);
+        /* Responsivitas */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .book-card {
+                width: 200px;
+                height: 300px;
+            }
+            
+            .text-display {
+                height: 250px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo">AudioNovel</div>
+        <div class="tagline">Immersive Audiobook Experience</div>
+    </header>
+
     <div class="container">
-        <header>
-            <h1>AudioVerse</h1>
-            <p>Immerse yourself in captivating stories with our premium audiobook collection</p>
-        </header>
-
-        <div class="main-content">
-            <div class="player-section">
-                <h2 class="section-title">Now Playing</h2>
-                <div class="player-container">
-                    <img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Book Cover" class="book-cover">
-                    <h3 class="book-title" id="current-book-title">The Silent Echo</h3>
-                    <p class="book-author" id="current-book-author">By Jonathan Miles</p>
-
-                    <audio id="audio-element" controls style="display: none;">
-                        <source src="https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-
-                    <div class="audio-selection">
-                        <button class="audio-btn active" data-audio="Audiotes">Audiotes</button>
-                        <button class="audio-btn" data-audio="book1">Book 1</button>
-                    </div>
-
-                    <div class="progress-container" id="progress-container">
-                        <div class="progress-bar" id="progress-bar"></div>
-                    </div>
-
-                    <div class="time-display">
-                        <span id="current-time">0:00</span>
-                        <span id="duration">0:00</span>
-                    </div>
-
-                    <div class="player-controls">
-                        <button class="control-btn" id="play-btn"><i class="fas fa-play"></i></button>
-                        <button class="control-btn" id="pause-btn"><i class="fas fa-pause"></i></button>
-                        <button class="control-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
-                        <button class="control-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
-                        <button class="control-btn" id="restart-btn"><i class="fas fa-redo"></i></button>
-                    </div>
-
-                    <div class="text-display" id="text-display">
-                        <!-- Text will be populated by JavaScript -->
-                    </div>
-                </div>
+        <!-- Bagian buku populer dengan scroll horizontal -->
+        <section class="popular-section">
+            <h2 class="section-title">Judul Populer</h2>
+            <div class="books-container">
+                <!-- Kartu buku akan di-generate oleh JavaScript -->
             </div>
+        </section>
 
-            <div class="cards-section">
-                <h2 class="section-title">Audiobook Collection</h2>
-                <div class="audiobook-cards" id="audiobook-cards">
-                    <!-- Cards will be populated by JavaScript -->
-                </div>
-
-                <div class="form-section">
-                    <h2 class="section-title">Request an Audiobook</h2>
-                    <form id="audiobook-form">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="title">Book Title</label>
-                                <input type="text" id="title" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="author">Author</label>
-                                <input type="text" id="author" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="genre">Genre</label>
-                                <select id="genre">
-                                    <option value="fiction">Fiction</option>
-                                    <option value="non-fiction">Non-Fiction</option>
-                                    <option value="sci-fi">Science Fiction</option>
-                                    <option value="fantasy">Fantasy</option>
-                                    <option value="mystery">Mystery</option>
-                                    <option value="biography">Biography</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Your Email</label>
-                                <input type="email" id="email" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Additional Notes</label>
-                            <textarea id="message"></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">Submit Request</button>
-                    </form>
-                </div>
+        <!-- Pemutar audio dan teks -->
+        <section class="player-section">
+            <h2 class="section-title">Sekarang Diputar</h2>
+            <audio id="audioPlayer" class="audio-player" controls></audio>
+            <div id="textDisplay" class="text-display">
+                <!-- Teks akan diisi oleh JavaScript -->
+                Pilih buku dari koleksi untuk mulai mendengarkan...
             </div>
-        </div>
+        </section>
 
-        <footer>
-            <p>&copy; 2023 AudioVerse. All rights reserved.</p>
-        </footer>
+        <!-- Formulir pendaftaran -->
+        <section class="subscription-form">
+            <h2 class="form-title">Dapatkan Notifikasi Judul Baru</h2>
+            <form id="subscriptionForm">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Nama Lengkap" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" placeholder Alamat Email" required>
+                </div>
+                <button type="submit" class="btn">Berlangganan Sekarang</button>
+            </form>
+        </section>
     </div>
 
+    <footer>
+        <p>&copy; 2023 AudioNovel. All rights reserved.</p>
+    </footer>
+
     <script>
-        // Audiobook data with Cloudflare URLs
-        const audiobooks = [
+        // Data buku dengan referensi ke JSON dan MP3
+        const books = [
             {
-                id: 1,
-                title: "Let it be ",
-                author: "jhon ",
-                cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-                audio: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
-                json: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.json",
-                duration: "4h 22m"
+                title: "Let It Be",
+                author: "The Beatles",
+                cover: "https://via.placeholder.com/250x350/4a6fa5/ffffff?text=Let+It+Be",
+                jsonUrl: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.json",
+                mp3Url: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3"
             },
             {
-                id: 2,
                 title: "Book 1",
                 author: "Unknown Author",
-                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-                audio: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3",
-                json: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.json",
-                duration: "5h 45m"
+                cover: "https://via.placeholder.com/250x350/6e9cd2/ffffff?text=Book+1",
+                jsonUrl: "https://cdn.baobaobook.org/transcripts/book1.json",
+                mp3Url: "https://cdn.baobaobook.org/transcripts/book1.mp3"
             },
             {
-                id: 3,
-                title: "The Midnight Library",
-                author: "Matt Haig",
-                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-                audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
-                json: "https://cdn.baobaobook.org/transcripts/Audiotes.json",
-                duration: "6h 17m"
-            },
-            {
-                id: 4,
-                title: "Desert Stars",
-                author: "Ahmed Al-Mansoori",
-                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-                audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
-                json: "https://cdn.baobaobook.org/transcripts/Audiotes.json",
-                duration: "7h 08m"
+                title: "Baan Nitan Dek Dee",
+                author: "Thai Author",
+                cover: "https://via.placeholder.com/250x350/ff6b6b/ffffff?text=Thai+Book",
+                jsonUrl: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.json",
+                mp3Url: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3"
             }
         ];
 
-        // DOM Elements
-        const audioElement = document.getElementById('audio-element');
-        const textDisplay = document.getElementById('text-display');
-        const playBtn = document.getElementById('play-btn');
-        const pauseBtn = document.getElementById('pause-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const audiobookCards = document.getElementById('audiobook-cards');
-        const audiobookForm = document.getElementById('audiobook-form');
-        const audioButtons = document.querySelectorAll('.audio-btn');
-        const progressBar = document.getElementById('progress-bar');
-        const currentTimeEl = document.getElementById('current-time');
-        const durationEl = document.getElementById('duration');
-        const progressContainer = document.getElementById('progress-container');
-        const currentBookTitle = document.getElementById('current-book-title');
-        const currentBookAuthor = document.getElementById('current-book-author');
+        // Elemen DOM
+        const booksContainer = document.querySelector('.books-container');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const textDisplay = document.getElementById('textDisplay');
+        const subscriptionForm = document.getElementById('subscriptionForm');
 
-        // Player state
-        let currentBookIndex = 0;
-        let transcriptData = [];
+        // Variabel global untuk data transkrip saat ini
+        let currentTranscription = [];
 
-        // Initialize the player
-        async function initPlayer() {
-            // Load the first audiobook
-            await loadAudiobook(0);
-            
-            // Create audiobook cards
-            renderAudiobookCards();
-            
-            // Set up event listeners
-            setupEventListeners();
-        }
-
-        // Load audiobook data
-        async function loadAudiobook(index) {
-            const book = audiobooks[index];
-            
-            // Update UI
-            currentBookTitle.textContent = book.title;
-            currentBookAuthor.textContent = `By ${book.author}`;
-            
-            // Set audio source
-            audioElement.src = book.audio;
-            
-            // Load transcript
-            try {
-                const response = await fetch(book.json);
-                transcriptData = await response.json();
-                renderTranscript();
-            } catch (error) {
-                console.error('Error loading transcript:', error);
-                textDisplay.innerHTML = '<p>Unable to load transcript. Please try again later.</p>';
-            }
-            
-            // Update active button
-            audioButtons.forEach(btn => {
-                if (btn.getAttribute('data-audio') === book.title.toLowerCase()) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-        }
-
-        // Render transcript
-        function renderTranscript() {
-            let textHTML = '';
-            transcriptData.forEach(fragment => {
-                textHTML += `<p data-start="${fragment.start}" data-end="${fragment.end}">${fragment.text}</p>`;
-            });
-            textDisplay.innerHTML = textHTML;
-        }
-
-        // Render audiobook cards
-        function renderAudiobookCards() {
-            let cardsHTML = '';
-            audiobooks.forEach((book, index) => {
-                cardsHTML += `
-                <div class="card" data-id="${book.id}" data-index="${index}">
-                    <img src="${book.cover}" alt="${book.title}" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">${book.title}</h3>
-                        <p class="card-author">By ${book.author}</p>
-                        <div class="card-duration">
-                            <span><i class="fas fa-headphones"></i> Audiobook</span>
-                            <span>${book.duration}</span>
+        // Fungsi untuk membuat kartu buku
+        function createBookCards() {
+            books.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                
+                bookCard.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="book-cover" style="background-image: url('${book.cover}')"></div>
+                            <div class="book-info">
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-author">${book.author}</div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <p>Klik untuk mendengarkan "${book.title}" oleh ${book.author}</p>
                         </div>
                     </div>
-                </div>
                 `;
-            });
-            audiobookCards.innerHTML = cardsHTML;
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            // Play/Pause buttons
-            playBtn.addEventListener('click', () => {
-                audioElement.play();
-                playBtn.querySelector('i').className = 'fas fa-pause';
-            });
-            
-            pauseBtn.addEventListener('click', () => {
-                audioElement.pause();
-                playBtn.querySelector('i').className = 'fas fa-play';
-            });
-            
-            // Previous/Next buttons
-            prevBtn.addEventListener('click', () => {
-                currentBookIndex = (currentBookIndex - 1 + audiobooks.length) % audiobooks.length;
-                loadAudiobook(currentBookIndex);
-                audioElement.play();
-                playBtn.querySelector('i').className = 'fas fa-pause';
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                currentBookIndex = (currentBookIndex + 1) % audiobooks.length;
-                loadAudiobook(currentBookIndex);
-                audioElement.play();
-                playBtn.querySelector('i').className = 'fas fa-pause';
-            });
-            
-            // Restart button
-            restartBtn.addEventListener('click', () => {
-                audioElement.currentTime = 0;
-            });
-            
-            // Audio selection buttons
-            audioButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const audioName = btn.getAttribute('data-audio');
-                    const bookIndex = audiobooks.findIndex(book => 
-                        book.title.toLowerCase() === audioName.toLowerCase());
-                    
-                    if (bookIndex !== -1) {
-                        currentBookIndex = bookIndex;
-                        loadAudiobook(currentBookIndex);
-                        audioElement.play();
-                        playBtn.querySelector('i').className = 'fas fa-pause';
-                    }
-                });
-            });
-            
-            // Card clicks
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const index = parseInt(card.getAttribute('data-index'));
-                    currentBookIndex = index;
-                    loadAudiobook(currentBookIndex);
-                    audioElement.play();
-                    playBtn.querySelector('i').className = 'fas fa-pause';
-                });
-            });
-            
-            // Progress bar seeking
-            progressContainer.addEventListener('click', (e) => {
-                const rect = progressContainer.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const width = rect.width;
-                const duration = audioElement.duration;
                 
-                if (!isNaN(duration)) {
-                    audioElement.currentTime = (clickX / width) * duration;
-                }
+                bookCard.addEventListener('click', () => loadBook(book));
+                booksContainer.appendChild(bookCard);
             });
-            
-            // Update progress bar and time display
-            audioElement.addEventListener('timeupdate', () => {
-                const currentTime = audioElement.currentTime;
-                const duration = audioElement.duration;
+        }
+
+        // Fungsi untuk memuat buku yang dipilih
+        async function loadBook(book) {
+            try {
+                // Tampilkan status loading
+                textDisplay.innerHTML = "Memuat buku...";
                 
-                if (!isNaN(duration)) {
-                    const progressPercent = (currentTime / duration) * 100;
-                    progressBar.style.width = `${progressPercent}%`;
-                    
-                    // Update time display
-                    currentTimeEl.textContent = formatTime(currentTime);
-                    durationEl.textContent = formatTime(duration);
-                    
-                    // Highlight text
-                    highlightText(currentTime);
-                }
-            });
+                // Muat data JSON
+                const response = await fetch(book.jsonUrl);
+                const data = await response.json();
+                
+                // Simpan transkrip saat ini
+                currentTranscription = data.transcription;
+                
+                // Setel sumber audio
+                audioPlayer.src = book.mp3Url;
+                
+                // Render teks
+                renderText();
+                
+                // Putar audio
+                audioPlayer.play();
+            } catch (error) {
+                console.error("Error loading book:", error);
+                textDisplay.innerHTML = "Terjadi kesalahan saat memuat buku. Silakan coba lagi.";
+            }
+        }
+
+        // Fungsi untuk merender teks
+        function renderText() {
+            textDisplay.innerHTML = '';
             
-            // Form submission
-            audiobookForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                alert('Thank you for your request! We will consider adding this audiobook to our collection.');
-                audiobookForm.reset();
+            currentTranscription.forEach(item => {
+                const p = document.createElement('p');
+                p.dataset.start = item.start;
+                p.dataset.end = item.end;
+                p.textContent = item.text;
+                textDisplay.appendChild(p);
             });
         }
 
-        // Format time in minutes and seconds
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        // Highlight text based on current time
-        function highlightText(currentTime) {
+        // Fungsi untuk menyinkronkan teks dengan audio
+        function syncTextWithAudio() {
+            const currentTime = audioPlayer.currentTime;
             const paragraphs = textDisplay.querySelectorAll('p');
-            let found = false;
             
-            paragraphs.forEach(p => {
-                const start = parseFloat(p.getAttribute('data-start'));
-                const end = parseFloat(p.getAttribute('data-end'));
+            // Hapus highlight dari semua paragraf
+            paragraphs.forEach(p => p.classList.remove('highlight'));
+            
+            // Temukan paragraf yang sesuai dengan waktu saat ini
+            for (let i = 0; i < paragraphs.length; i++) {
+                const start = parseFloat(paragraphs[i].dataset.start);
+                const end = parseFloat(paragraphs[i].dataset.end);
                 
-                if (currentTime >= start && currentTime < end) {
-                    p.classList.add('highlight');
-                    // Scroll to the highlighted paragraph
-                    if (!found) {
-                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        found = true;
-                    }
-                } else {
-                    p.classList.remove('highlight');
+                if (currentTime >= start && currentTime <= end) {
+                    paragraphs[i].classList.add('highlight');
+                    
+                    // Scroll ke paragraf yang disorot
+                    paragraphs[i].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    break;
                 }
-            });
+            }
         }
 
-        // Initialize the page
-        initPlayer();
+        // Fungsi untuk menangani pengiriman formulir
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('Terima kasih telah berlangganan! Anda akan menerima notifikasi judul baru.');
+            subscriptionForm.reset();
+        }
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', () => {
+            // Buat kartu buku
+            createBookCards();
+            
+            // Sinkronkan teks dengan audio
+            audioPlayer.addEventListener('timeupdate', syncTextWithAudio);
+            
+            // Tangani pengiriman formulir
+            subscriptionForm.addEventListener('submit', handleFormSubmit);
+        });
     </script>
 </body>
 </html>
