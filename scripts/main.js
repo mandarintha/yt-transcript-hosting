@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load data audiobooks
     async function loadAudiobookData() {
         try {
-            const response = await fetch('data/audiobooks.json');
+            const response = await fetch('/audiobooks.json');
             if (!response.ok) {
                 throw new Error('Failed to load audiobook data');
             }
