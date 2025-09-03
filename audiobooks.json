@@ -12,7 +12,7 @@
         "title": "บ้านนิทานเด็กดี",
         "author": "Baan Nithan",
         "cover": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-        "audio": "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%80%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%80%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3",
+        "audio": "cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
         "duration": "5h 45m"
     },
     {
@@ -20,7 +20,7 @@
         "title": "The Midnight Library",
         "author": "Matt Haig",
         "cover": "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-        "audio": "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
+        "audio": "cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
         "duration": "6h 17m"
     },
     {
@@ -28,7 +28,7 @@
         "title": "Desert Stars",
         "author": "Ahmed Al-Mansoori",
         "cover": "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-        "audio": "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
+        "audio": "cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
         "duration": "7h 08m"
     },
     {
@@ -36,7 +36,8 @@
         "title": "เรื่องราวของเวลา",
         "author": "นิทานปรัชญา",
         "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        "audio": "https://cdn.assemblyai.com/upload/99b93b93-8a76-4967-af89-02b92d13db55",
+        "audio": "cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
         "duration": "12m 06s"
     }
 ]
+
