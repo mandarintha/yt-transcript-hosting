@@ -127,7 +127,7 @@ async function loadTranscriptFromFile(bookId) {
         // Coba muat sebagai CSV terlebih dahulu
         let response;
         try {
-            response = await fetch(`data/transcripts/${bookId}.csv`);
+            response = await fetch(`/transcripts/${bookId}.csv`);
             if (!response.ok) throw new Error('CSV file not found');
             const csvText = await response.text();
             return parseCSVDelimitedTranscript(csvText);
@@ -143,4 +143,5 @@ async function loadTranscriptFromFile(bookId) {
         console.error('Error loading transcript:', error);
         return [];
     }
+
 }
