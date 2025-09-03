@@ -162,18 +162,72 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
+        
+        /* --- Perubahan untuk scroll horizontal --- */
+        .cards-section {
+            overflow: hidden; /* Mencegah scrollbar di section itu sendiri */
+        }
+        
+        .audiobook-cards-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .scroll-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .scroll-btn:hover {
+            opacity: 1;
+        }
+        
+        #scroll-left {
+            left: -15px;
+        }
+
+        #scroll-right {
+            right: -15px;
+        }
 
         .audiobook-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            display: flex;
             gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 0;
             margin-top: 20px;
         }
 
+        /* Sembunyikan scrollbar bawaan */
+        .audiobook-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .audiobook-cards {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        
         .card {
+            min-width: 250px; /* Menentukan lebar minimum kartu */
+            max-width: 250px;
             background: var(--glass-bg);
             border-radius: 15px;
             overflow: hidden;
+            flex-shrink: 0;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             transform-style: preserve-3d;
             perspective: 1000px;
@@ -361,8 +415,12 @@
 
             <section class="cards-section">
                 <h2 class="section-title">Audiobook Collection</h2>
-                <div class="audiobook-cards" id="audiobook-cards">
-                    </div>
+                <div class="audiobook-cards-wrapper">
+                    <button class="scroll-btn" id="scroll-left"><i class="fas fa-chevron-left"></i></button>
+                    <div class="audiobook-cards" id="audiobook-cards">
+                        </div>
+                    <button class="scroll-btn" id="scroll-right"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </section>
         </div>
 
@@ -437,7 +495,9 @@
                 durationEl: document.getElementById('duration'),
                 bookCover: document.getElementById('book-cover'),
                 currentBookTitle: document.getElementById('current-book-title'),
-                currentBookAuthor: document.getElementById('current-book-author')
+                currentBookAuthor: document.getElementById('current-book-author'),
+                scrollLeftBtn: document.getElementById('scroll-left'),
+                scrollRightBtn: document.getElementById('scroll-right')
             };
 
             // Player state
@@ -544,6 +604,15 @@
                 // Rewind/Forward buttons
                 elements.rewindBtn.addEventListener('click', () => elements.audio.currentTime -= 10);
                 elements.forwardBtn.addEventListener('click', () => elements.audio.currentTime += 10);
+
+                // Scroll buttons for cards
+                elements.scrollLeftBtn.addEventListener('click', () => {
+                    elements.audiobookCards.scrollBy({ left: -270, behavior: 'smooth' });
+                });
+
+                elements.scrollRightBtn.addEventListener('click', () => {
+                    elements.audiobookCards.scrollBy({ left: 270, behavior: 'smooth' });
+                });
 
                 // Card clicks to change audiobooks
                 elements.audiobookCards.addEventListener('click', (e) => {
