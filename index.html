@@ -372,6 +372,24 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.4);
         }
+        
+        .error-message {
+            background: rgba(255, 80, 80, 0.15);
+            border-left: 4px solid #ff5252;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .error-message p {
+            margin: 5px 0;
+        }
+        
+        .transcript-sentence {
+            margin: 10px 0;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -409,7 +427,8 @@
                     </div>
 
                     <div class="text-display" id="text-display">
-                        </div>
+                        <p>Loading transcript...</p>
+                    </div>
                 </div>
             </section>
 
@@ -418,7 +437,8 @@
                 <div class="audiobook-cards-wrapper">
                     <button class="scroll-btn" id="scroll-left"><i class="fas fa-chevron-left"></i></button>
                     <div class="audiobook-cards" id="audiobook-cards">
-                        </div>
+                        <!-- Cards will be populated dynamically -->
+                    </div>
                     <button class="scroll-btn" id="scroll-right"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </section>
@@ -471,11 +491,74 @@
          * Handles dynamic content, audio playback, and user interactions.
          */
         document.addEventListener('DOMContentLoaded', () => {
+            // Data transkrip langsung di-embed di kode
+            const transcripts = {
+                1: [
+                    { start: 0.0, end: 47.0, text: "วันนี้เสนอตอน เจ้าหนูกับเรื่องไม่จริง ในหมู่บ้านสัตว์ตัวจิ๋ว มีหนูตัวเล็กน่ารัก มันมีนิสัยร่าเริงชอบเล่น ชอบพูด และบางทีก็ชอบแต่งเรื่องให้ดูน่าตื่นเต้น วันหนึ่ง เจ้าหนูวิ่งมาหาเพื่อน ๆ แล้วร้องว่า \"มาดูนี่เร็ว! ช้างบินได้! ฉันเห็นมันลอยอยู่บนฟ้า!\" เพื่อน ๆ ตกใจต่างพากันวิ่งมาดู \"จริงเหรอ?! ช้างบินได้เหรอ?!\" แต่มันไม่จริงเลย... เจ้าหนูหัวเราะ ฮ่าๆๆ และพูดขึ้นว่า \"ช้างที่ไหนจะบินได้ไม่มีหรอก..ฉันพูดเล่น\" เพื่อนๆ ต่างพากันบ่นเจ้าหนู แล้วแยกย้ายกันกลับบ้าน เช้าวันต่อมา เจ้าหนูเจอกับกระรอก แล้วบอกกระรอกไปว่า" },
+                    { start: 55.0, end: 97.0, text: "ฉันมีชีสทองคำซ่อนไว้ใต้ดิน อย่าบอกใครนะ แต่ฉันจะให้เธอ! กระรอกดีใจมาก และขุดดินเพื่อที่จะหาชีสทองคำจนถึงเย็น แต่ก็หาไม่เจอสักที เจ้าหนูเดินผ่านกลับมาเจอแล้วถามว่า มาขุดอะไรที่นี่หรอ กระรอกตอบไปว่า ก็มาขุดชีสทองคำที่เธอบอกให้ฉันไง เจ้าหนูหัวเราะชอบใจและตอบไปว่า ฉันแค่ล้อเธอเล่น ไม่น่าคิดจริงจังเลย กระรอกได้ยินดังนั้นก็โกรธมาก และเดินจากไปไม่คุยกับเจ้าหนูต่อ หลายวันผ่านไป เพื่อน ๆ เริ่มไม่เชื่อสิ่งที่เจ้าหนูพูดแล้ว เธอชอบพูดไม่จริง... ใช่ ฟังแล้วก็ไม่รู้จะเชื่อดีไหม… แล้ววันหนึ่ง ตอนที่เจ้าหนูกำลังเล่นคนเดียวที่หลังพุ่มไม้" },
+                    { start: 107.0, end: 148.0, text: "เธอเห็น งูตัวใหญ่ เลื้อยอยู่ใกล้มาก! เจ้าหนูตกใจสุดขีด \"งู! งู! ช่วยด้วย!!\" เธอร้องเสียงดังสุดเสียง แต่เพื่อน ๆ ได้ยินแล้วกลับพูดว่า \"คงแต่งเรื่องอีกแล้วแน่เลย…\" \"เราไม่อยากโดนเธอหลอกอีกแล้วล่ะ…\" ไม่มีใครมาช่วยเจ้าหนูเลย แต่โชคดีที่เจ้านกบินผ่านมาเจอพอดี จึงไล่งูให้ทันก่อนที่เจ้าหนูจะโดนกัด นกพูดว่า \"ปลอดภัยแล้วนะ\" \"แล้วทำไมไม่มีใครมาช่วยเธอเลยล่ะ เพื่อนก็อยู่กันตั้งเยอะ\" เจ้าหนูก้มหน้าตอบไปว่า \"ไม่มีใครเชื่อฉันเลย เพราะฉันชอบโกหกพวกเค้า\" หลังเหตุการณ์วันนั้น เจ้าหนูรู้สึกเสียใจมาก เธอเข้าไปหาเพื่อน ๆ แล้วพูดว่า" },
+                    { start: 158.0, end: 201.0, text: "\"เมื่อวานฉันเจองูจริง ๆ แต่ไม่มีใครเชื่อเลย ฉันรู้แล้วว่าการพูดไม่จริงทำให้เพื่อนไม่ไว้ใจ ฉันขอโทษนะ…\" เพื่อน ๆ มองหน้ากัน แล้วพูดว่า \"ถ้าเธอพูดความจริงแบบนี้ ต่อไปเราก็จะให้อภัย\" \"และเป็นเพื่อนกันเหมือนเดิม!\" เจ้าหนูยิ้มกว้าง สีหน้ามีความสุขขึ้นมาทันที ตั้งแต่นั้นมา เจ้าหนูก็พูดความจริงเสมอ ไม่แต่งเรื่องอีก และได้กลับมาเป็นเพื่อนรักกับทุกคนอีกครั้ง... นิทานเรื่องนี้สอนให้รู้ว่า. การพูดโกหกอาจดูสนุกในตอนแรก แต่ถ้าเราพูดไม่จริงบ่อย ๆ สุดท้ายจะไม่มีใครเชื่อเราเลย เพราะฉะนั้นเราควรพูดความจริงอยู่เสมอ" },
+                    { start: 207.0, end: 222.0, text: "เพื่อให้คนไว้ใจและรักเรานะเด็กๆ... ติดตามนิทานเรื่องใหม่ๆ ได้ที่ช่อง \"บ้านนิทานเด็กดี\" และอย่าลืมกดติดตาม กดไลค์ กดแชร์ นิทานสนุกๆ ข้อคิดดีๆ ไว้ด้วยนะคร้าบบ..." }
+                ],
+                2: [
+                    { start: 0.0, end: 47.0, text: "วันนี้เสนอตอน เจ้าหนูกับเรื่องไม่จริง ในหมู่บ้านสัตว์ตัวจิ๋ว มีหนูตัวเล็กน่ารัก มันมีนิสัยร่าเริงชอบเล่น ชอบพูด และบางทีก็ชอบแต่งเรื่องให้ดูน่าตื่นเต้น วันหนึ่ง เจ้าหนูวิ่งมาหาเพื่อน ๆ แล้วร้องว่า \"มาดูนี่เร็ว! ช้างบินได้! ฉันเห็นมันลอยอยู่บนฟ้า!\" เพื่อน ๆ ตกใจต่างพากันวิ่งมาดู \"จริงเหรอ?! ช้างบินได้เหรอ?!\" แต่มันไม่จริงเลย... เจ้าหนูหัวเราะ ฮ่าๆๆ และพูดขึ้นว่า \"ช้างที่ไหนจะบินได้ไม่มีหรอก..ฉันพูดเล่น\" เพื่อนๆ ต่างพากันบ่นเจ้าหนู แล้วแยกย้ายกันกลับบ้าน เช้าวันต่อมา เจ้าหนูเจอกับกระรอก แล้วบอกกระรอกไปว่า" },
+                    { start: 55.0, end: 97.0, text: "ฉันมีชีสทองคำซ่อนไว้ใต้ดิน อย่าบอกใครนะ แต่ฉันจะให้เธอ! กระรอกดีใจมาก และขุดดินเพื่อที่จะหาชีสทองคำจนถึงเย็น แต่ก็หาไม่เจอสักที เจ้าหนูเดินผ่านกลับมาเจอแล้วถามว่า มาขุดอะไรที่นี่หรอ กระรอกตอบไปว่า ก็มาขุดชีสทองคำที่เธอบอกให้ฉันไง เจ้าหนูหัวเราะชอบใจและตอบไปว่า ฉันแค่ล้อเธอเล่น ไม่น่าคิดจริงจังเลย กระรอกได้ยินดังนั้นก็โกรธมาก และเดินจากไปไม่คุยกับเจ้าหนูต่อ หลายวันผ่านไป เพื่อน ๆ เริ่มไม่เชื่อสิ่งที่เจ้าหนูพูดแล้ว เธอชอบพูดไม่จริง... ใช่ ฟังแล้วก็ไม่รู้จะเชื่อดีไหม… แล้ววันหนึ่ง ตอนที่เจ้าหนูกำลังเล่นคนเดียวที่หลังพุ่มไม้" },
+                    { start: 107.0, end: 148.0, text: "เธอเห็น งูตัวใหญ่ เลื้อยอยู่ใกล้มาก! เจ้าหนูตกใจสุดขีด \"งู! งู! ช่วยด้วย!!\" เธอร้องเสียงดังสุดเสียง แต่เพื่อน ๆ ได้ยินแล้วกลับพูดว่า \"คงแต่งเรื่องอีกแล้วแน่เลย…\" \"เราไม่อยากโดนเธอหลอกอีกแล้วล่ะ…\" ไม่มีใครมาช่วยเจ้าหนูเลย แต่โชคดีที่เจ้านกบินผ่านมาเจอพอดี จึงไล่งูให้ทันก่อนที่เจ้าหนูจะโดนกัด นกพูดว่า \"ปลอดภัยแล้วนะ\" \"แล้วทำไมไม่มีใครมาช่วยเธอเลยล่ะ เพื่อนก็อยู่กันตั้งเยอะ\" เจ้าหนูก้มหน้าตอบไปว่า \"ไม่มีใครเชื่อฉันเลย เพราะฉันชอบโกหกพวกเค้า\" หลังเหตุการณ์วันนั้น เจ้าหนูรู้สึกเสียใจมาก เธอเข้าไปหาเพื่อน ๆ แล้วพูดว่า" },
+                    { start: 158.0, end: 201.0, text: "\"เมื่อวานฉันเจองูจริง ๆ แต่ไม่มีใครเชื่อเลย ฉันรู้แล้วว่าการพูดไม่จริงทำให้เพื่อนไม่ไว้ใจ ฉันขอโทษนะ…\" เพื่อน ๆ มองหน้ากัน แล้วพูดว่า \"ถ้าเธอพูดความจริงแบบนี้ ต่อไปเราก็จะให้อภัย\" \"และเป็นเพื่อนกันเหมือนเดิม!\" เจ้าหนูยิ้มกว้าง สีหน้ามีความสุขขึ้นมาทันที ตั้งแต่นั้นมา เจ้าหนูก็พูดความจริงเสมอ ไม่แต่งเรื่องอีก และได้กลับมาเป็นเพื่อนรักกับทุกคนอีกครั้ง... นิทานเรื่องนี้สอนให้รู้ว่า. การพูดโกหกอาจดูสนุกในตอนแรก แต่ถ้าเราพูดไม่จริงบ่อย ๆ สุดท้ายจะไม่มีใครเชื่อเราเลย เพราะฉะนั้นเราควรพูดความจริงอยู่เสมอ" },
+                    { start: 207.0, end: 222.0, text: "เพื่อให้คนไว้ใจและรักเรานะเด็กๆ... ติดตามนิทานเรื่องใหม่ๆ ได้ที่ช่อง \"บ้านนิทานเด็กดี\" และอย่าลืมกดติดตาม กดไลค์ กดแชร์ นิทานสนุกๆ ข้อคิดดีๆ ไว้ด้วยนะคร้าบบ..." }
+                ],
+                3: [
+                    { start: 0.0, end: 30.0, text: "Welcome to The Midnight Library. In a small town, there was a library that only opened between midnight and dawn. This wasn't an ordinary library - every book contained the story of a life you could have lived." },
+                    { start: 30.0, end: 60.0, text: "Nora Seed, our protagonist, found herself at the lowest point in her life. She had lost her job, her cat had died, and her brother wasn't speaking to her. One night, feeling utterly hopeless, she decided to end it all." },
+                    { start: 60.0, end: 90.0, text: "But instead of death, she woke up in the Midnight Library. The librarian, Mrs. Elm, her former school librarian, explained that this was a place between life and death where Nora could try out different lives through the books on the shelves." },
+                    { start: 90.0, end: 120.0, text: "Each book represented a different life Nora could have lived if she had made different choices. She could have been a rock star, a glaciologist, a happily married woman with children, or even a pub owner in Australia." },
+                    { start: 120.0, end: 150.0, text: "As Nora tried different lives, she discovered something profound: no life is perfect. Every choice comes with its own set of challenges and joys. The key wasn't finding the perfect life, but finding a life worth living." },
+                    { start: 150.0, end: 180.0, text: "In the end, Nora realized that the life she had, with all its imperfections, was worth fighting for. She chose to return to her original life with a new perspective and appreciation for what she already had." }
+                ],
+                4: [
+                    { start: 0.0, end: 35.0, text: "In the vast deserts of Arabia, under the endless sky filled with stars, lived a young Bedouin named Zaid. Every night, he would sit outside his tent, gazing at the stars, dreaming of adventures beyond the sand dunes." },
+                    { start: 35.0, end: 70.0, text: "Zaid's grandfather, a wise old man with stories etched in every line of his face, would tell him tales of ancient astronomers who navigated the desert using only the stars. 'The stars are our compass, our calendar, and our storytellers,' he would say." },
+                    { start: 70.0, end: 105.0, text: "One night, a strange star appeared in the sky - brighter than any they had seen before. The elders grew concerned, believing it to be an omen. But Zaid saw it as an invitation to explore." },
+                    { start: 105.0, end: 140.0, text: "With his grandfather's blessing and guidance, Zaid began studying the stars more seriously. He learned to read their patterns, understanding when to plant crops, when to move camp, and how to find water in the most barren places." },
+                    { start: 140.0, end: 175.0, text: "Years passed, and Zaid became the tribe's star reader. He used his knowledge not just for navigation, but to bring his people together, teaching children about the constellations and the stories behind them." },
+                    { start: 175.0, end: 210.0, text: "The strange star that had once caused concern became a symbol of hope and knowledge. Zaid realized that sometimes the most extraordinary journeys begin with a single point of light in the darkness." }
+                ]
+            };
+
+            // Data audiobooks (tanpa perlu URL SRT)
             const audiobooks = [
-                { id: 1, title: "Let it be", author: "John Lennon", cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80", audio: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3", json: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.json", duration: "4h 22m" },
-                { id: 2, title: "Tale of a good Kid", author: "Unknown Author", cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80", audio: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3", json: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.json", duration: "5h 45m" },
-                { id: 3, title: "The Midnight Library", author: "Matt Haig", cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80", audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3", json: "https://cdn.baobaobook.org/transcripts/Audiotes.json", duration: "6h 17m" },
-                { id: 4, title: "Desert Stars", author: "Ahmed Al-Mansoori", cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80", audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3", json: "https://cdn.baobaobook.org/transcripts/Audiotes.json", duration: "7h 08m" }
+                { 
+                    id: 1, 
+                    title: "Let it be", 
+                    author: "John Lennon", 
+                    cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                    audio: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
+                    duration: "4h 22m" 
+                },
+                { 
+                    id: 2, 
+                    title: "บ้านนิทานเด็กดี", 
+                    author: "Baan Nithan", 
+                    cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                    audio: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3",
+                    duration: "5h 45m" 
+                },
+                { 
+                    id: 3, 
+                    title: "The Midnight Library", 
+                    author: "Matt Haig", 
+                    cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                    audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
+                    duration: "6h 17m" 
+                },
+                { 
+                    id: 4, 
+                    title: "Desert Stars", 
+                    author: "Ahmed Al-Mansoori", 
+                    cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                    audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
+                    duration: "7h 08m" 
+                }
             ];
 
             // DOM Elements
@@ -502,51 +585,13 @@
 
             // Player state
             let currentBookIndex = 0;
-            let transcriptData = [];
             let isPlaying = false;
-
-            // Initialize the player
-            async function initPlayer() {
-                renderAudiobookCards();
-                await loadAudiobook(currentBookIndex);
-                setupEventListeners();
-            }
-
-            // Load audiobook data
-            async function loadAudiobook(index) {
-                const book = audiobooks[index];
-                if (!book) return;
-
-                // Update UI elements
-                elements.currentBookTitle.textContent = book.title;
-                elements.currentBookAuthor.textContent = `By ${book.author}`;
-                elements.bookCover.src = book.cover;
-                elements.audio.src = book.audio;
-
-                // Load and render transcript
-                try {
-                    const response = await fetch(book.json);
-                    if (!response.ok) throw new Error('Failed to load transcript');
-                    transcriptData = await response.json();
-                    renderTranscript();
-                } catch (error) {
-                    console.error('Error loading transcript:', error);
-                    elements.textDisplay.innerHTML = '<p>Unable to load transcript. Please try again later.</p>';
-                    transcriptData = [];
-                }
-
-                // Restart playback from beginning if a new book is loaded
-                if (isPlaying) {
-                    elements.audio.play();
-                } else {
-                    elements.audio.load();
-                }
-            }
 
             // Render transcript
             function renderTranscript() {
-                const textHTML = transcriptData.map(fragment =>
-                    `<p data-start="${fragment.start}" data-end="${fragment.end}">${fragment.text}</p>`
+                const transcript = transcripts[currentBookIndex + 1] || [];
+                const textHTML = transcript.map(fragment =>
+                    `<p class="transcript-sentence" data-start="${fragment.start}" data-end="${fragment.end}">${fragment.text}</p>`
                 ).join('');
                 elements.textDisplay.innerHTML = textHTML;
             }
@@ -602,8 +647,17 @@
                 });
                 
                 // Rewind/Forward buttons
-                elements.rewindBtn.addEventListener('click', () => elements.audio.currentTime -= 10);
-                elements.forwardBtn.addEventListener('click', () => elements.audio.currentTime += 10);
+                elements.rewindBtn.addEventListener('click', () => {
+                    if (!isNaN(elements.audio.currentTime)) {
+                        elements.audio.currentTime = Math.max(0, elements.audio.currentTime - 10);
+                    }
+                });
+                
+                elements.forwardBtn.addEventListener('click', () => {
+                    if (!isNaN(elements.audio.currentTime) && !isNaN(elements.audio.duration)) {
+                        elements.audio.currentTime = Math.min(elements.audio.duration, elements.audio.currentTime + 10);
+                    }
+                });
 
                 // Scroll buttons for cards
                 elements.scrollLeftBtn.addEventListener('click', () => {
@@ -632,7 +686,7 @@
                     const clickX = e.clientX - rect.left;
                     const width = rect.width;
                     const duration = elements.audio.duration;
-                    if (!isNaN(duration)) {
+                    if (!isNaN(duration) && duration > 0) {
                         elements.audio.currentTime = (clickX / width) * duration;
                     }
                 });
@@ -641,7 +695,7 @@
                 elements.audio.addEventListener('timeupdate', () => {
                     const currentTime = elements.audio.currentTime;
                     const duration = elements.audio.duration;
-                    if (!isNaN(duration)) {
+                    if (!isNaN(duration) && duration > 0) {
                         const progressPercent = (currentTime / duration) * 100;
                         elements.progressBar.style.width = `${progressPercent}%`;
                         elements.currentTimeEl.textContent = formatTime(currentTime);
@@ -666,6 +720,8 @@
 
             // Format time in minutes and seconds
             function formatTime(seconds) {
+                if (isNaN(seconds) || seconds < 0) return '0:00';
+                
                 const mins = Math.floor(seconds / 60);
                 const secs = Math.floor(seconds % 60);
                 return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
@@ -673,12 +729,13 @@
 
             // Highlight text based on current time
             function highlightText(currentTime) {
-                const paragraphs = elements.textDisplay.querySelectorAll('p');
+                const paragraphs = elements.textDisplay.querySelectorAll('.transcript-sentence');
                 let found = false;
                 paragraphs.forEach(p => {
                     const start = parseFloat(p.getAttribute('data-start'));
                     const end = parseFloat(p.getAttribute('data-end'));
-                    const isCurrent = currentTime >= start && currentTime < end;
+                    const isCurrent = !isNaN(start) && !isNaN(end) && 
+                                    currentTime >= start && currentTime < end;
                     p.classList.toggle('highlight', isCurrent);
                     if (isCurrent && !found) {
                         p.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -688,12 +745,47 @@
             }
 
             // Show a temporary status message
-            function showStatusMessage(message, type) {
+            function showStatusMessage(message, type = 'info') {
                 const statusDiv = document.createElement('div');
                 statusDiv.className = `status-message ${type}`;
+                statusDiv.style.background = 'rgba(76, 175, 80, 0.15)';
+                statusDiv.style.borderLeft = '4px solid #4CAF50';
+                statusDiv.style.padding = '12px';
+                statusDiv.style.borderRadius = '6px';
+                statusDiv.style.margin = '15px 0';
+                statusDiv.style.textAlign = 'center';
                 statusDiv.textContent = message;
                 elements.audiobookForm.parentNode.insertBefore(statusDiv, elements.audiobookForm);
                 setTimeout(() => statusDiv.remove(), 5000);
+            }
+
+            // Load audiobook data
+            function loadAudiobook(index) {
+                const book = audiobooks[index];
+                if (!book) return;
+
+                // Update UI elements
+                elements.currentBookTitle.textContent = book.title;
+                elements.currentBookAuthor.textContent = `By ${book.author}`;
+                elements.bookCover.src = book.cover;
+                elements.audio.src = book.audio;
+                
+                // Tampilkan transkrip yang sudah di-embed
+                renderTranscript();
+                
+                // Restart playback from beginning if a new book is loaded
+                if (isPlaying) {
+                    elements.audio.play();
+                } else {
+                    elements.audio.load();
+                }
+            }
+
+            // Initialize the player
+            function initPlayer() {
+                renderAudiobookCards();
+                loadAudiobook(currentBookIndex);
+                setupEventListeners();
             }
 
             // Start the application
