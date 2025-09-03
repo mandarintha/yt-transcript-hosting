@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AudioVerse - Modern Audiobook Experience</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Montserrat', 'Noto Sans Thai', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
         body {
@@ -55,13 +55,6 @@
         @media (max-width: 900px) {
             .main-content {
                 grid-template-columns: 1fr;
-            }
-            header h1 {
-                font-size: 2.5rem;
-            }
-            .book-cover {
-                width: 200px;
-                height: 200px;
             }
         }
 
@@ -153,11 +146,6 @@
             text-align: left;
             font-size: 1.1rem;
             line-height: 1.6;
-            font-family: 'Noto Sans Thai', 'Montserrat', sans-serif;
-        }
-
-        .text-display p {
-            margin-bottom: 10px;
         }
 
         .highlight {
@@ -297,10 +285,6 @@
         .audio-selection {
             margin: 15px 0;
             text-align: center;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
         .audio-btn {
@@ -309,9 +293,9 @@
             color: white;
             padding: 10px 15px;
             border-radius: 8px;
+            margin: 0 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
         }
 
         .audio-btn:hover {
@@ -342,6 +326,15 @@
             color: #ffe082;
         }
 
+        /* Demo Audio Notice */
+        .demo-notice {
+            background: rgba(255, 152, 0, 0.3);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
         /* Progress Bar */
         .progress-container {
             width: 100%;
@@ -350,7 +343,6 @@
             border-radius: 4px;
             margin: 15px 0;
             overflow: hidden;
-            cursor: pointer;
         }
 
         .progress-bar {
@@ -388,22 +380,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.4);
         }
-
-        @media (max-width: 600px) {
-            .audio-btn {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-            .control-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-            .text-display {
-                font-size: 1rem;
-                height: 250px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -417,23 +393,18 @@
             <div class="player-section">
                 <h2 class="section-title">Now Playing</h2>
                 <div class="player-container">
-                    <img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Book Cover" class="book-cover">
-                    <h3 class="book-title" id="current-book-title">Let It Be</h3>
-                    <p class="book-author" id="current-book-author">By The Beatles</p>
+                    <img src="https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Book Cover" class="book-cover">
+                    <h3 class="book-title" id="current-book-title">The Silent Echo</h3>
+                    <p class="book-author" id="current-book-author">By Jonathan Miles</p>
 
-                    <div class="status-message warning demo-notice">
-                        Note: Audio files are placeholders. Replace with actual audio files for full functionality.
-                    </div>
-
-                    <audio id="audio-element" controls class="audio-player">
-                        <source src="https://cdn.baobaobook.org/transcripts/let_it_be.mp3" type="audio/mpeg">
+                    <audio id="audio-element" controls style="display: none;">
+                        <source src="https://pub-48ebd859b0574f259146648eae7f7adf.r2.dev/transcripts/Audiotes.mp3" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
 
                     <div class="audio-selection">
-                        <button class="audio-btn active" data-audio="let_it_be">Let It Be</button>
-                        <button class="audio-btn" data-audio="mermaid">Mermaid Story</button>
-                        <button class="audio-btn" data-audio="little_mouse">Little Mouse Story</button>
+                        <button class="audio-btn active" data-audio="Audiotes">Audiotes</button>
+                        <button class="audio-btn" data-audio="book1">Book 1</button>
                     </div>
 
                     <div class="progress-container" id="progress-container">
@@ -467,78 +438,85 @@
 
                 <div class="form-section">
                     <h2 class="section-title">Request an Audiobook</h2>
-                    <div class="status-message" id="form-status" style="display: none;"></div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="title">Book Title</label>
-                            <input type="text" id="title" required>
+                    <form id="audiobook-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="title">Book Title</label>
+                                <input type="text" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="author">Author</label>
+                                <input type="text" id="author" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="genre">Genre</label>
+                                <select id="genre">
+                                    <option value="fiction">Fiction</option>
+                                    <option value="non-fiction">Non-Fiction</option>
+                                    <option value="sci-fi">Science Fiction</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="mystery">Mystery</option>
+                                    <option value="biography">Biography</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" required>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="author">Author</label>
-                            <input type="text" id="author" required>
+                            <label for="message">Additional Notes</label>
+                            <textarea id="message"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="genre">Genre</label>
-                            <select id="genre">
-                                <option value="fiction">Fiction</option>
-                                <option value="non-fiction">Non-Fiction</option>
-                                <option value="sci-fi">Science Fiction</option>
-                                <option value="fantasy">Fantasy</option>
-                                <option value="mystery">Mystery</option>
-                                <option value="biography">Biography</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Your Email</label>
-                            <input type="email" id="email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Additional Notes</label>
-                        <textarea id="message"></textarea>
-                    </div>
-                    <button type="button" class="submit-btn" id="submit-btn">Submit Request</button>
+                        <button type="submit" class="submit-btn">Submit Request</button>
+                    </form>
                 </div>
             </div>
         </div>
 
         <footer>
-            <p>&copy; 2025 AudioVerse. All rights reserved.</p>
+            <p>&copy; 2023 AudioVerse. All rights reserved.</p>
         </footer>
     </div>
 
     <script>
-        // Audiobook data
+        // Audiobook data with Cloudflare URLs
         const audiobooks = [
             {
                 id: 1,
-                title: "Let It Be",
-                author: "The Beatles",
-                cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                title: "Audiotes",
+                author: "Various Authors",
+                cover: "https://images.unsplash.com/photo-1629992101753-56d196c8aabb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
                 audio: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.mp3",
                 json: "https://cdn.baobaobook.org/transcripts/let%20it%20bee.json",
-                duration: "3m 42s",
-                language: "en"
+                duration: "4h 22m"
             },
             {
                 id: 2,
-                title: "Mermaid Story",
+                title: "Book 1",
                 author: "Unknown Author",
-                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                audio: "https://cdn.baobaobook.org/transcripts/mermaid.mp3",
-                json: "https://cdn.baobaobook.org/transcripts/mermaid.json",
-                duration: "13m 23s",
-                language: "th"
+                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                audio: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.mp3",
+                json: "https://cdn.baobaobook.org/transcripts/%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B4%E0%B8%97%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%94%E0%B8%B5_%E0%B8%95%E0%B8%AD%E0%B8%99_%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B8%B9%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%88%E0%B8%A3%E0%B8%B4%E0%B8%87.json",
+                duration: "5h 45m"
             },
             {
                 id: 3,
-                title: "Little Mouse Story",
-                author: "Unknown Author",
-                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                audio: "https://cdn.baobaobook.org/transcripts/little_mouse.mp3",
-                json: "https://cdn.baobaobook.org/transcripts/little_mouse.json",
-                duration: "3m 42s",
-                language: "th"
+                title: "The Midnight Library",
+                author: "Matt Haig",
+                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
+                json: "https://cdn.baobaobook.org/transcripts/Audiotes.json",
+                duration: "6h 17m"
+            },
+            {
+                id: 4,
+                title: "Desert Stars",
+                author: "Ahmed Al-Mansoori",
+                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                audio: "https://cdn.baobaobook.org/transcripts/Audiotes.mp3",
+                json: "https://cdn.baobaobook.org/transcripts/Audiotes.json",
+                duration: "7h 08m"
             }
         ];
 
@@ -551,7 +529,7 @@
         const nextBtn = document.getElementById('next-btn');
         const restartBtn = document.getElementById('restart-btn');
         const audiobookCards = document.getElementById('audiobook-cards');
-        const submitBtn = document.getElementById('submit-btn');
+        const audiobookForm = document.getElementById('audiobook-form');
         const audioButtons = document.querySelectorAll('.audio-btn');
         const progressBar = document.getElementById('progress-bar');
         const currentTimeEl = document.getElementById('current-time');
@@ -559,7 +537,6 @@
         const progressContainer = document.getElementById('progress-container');
         const currentBookTitle = document.getElementById('current-book-title');
         const currentBookAuthor = document.getElementById('current-book-author');
-        const formStatus = document.getElementById('form-status');
 
         // Player state
         let currentBookIndex = 0;
@@ -567,8 +544,13 @@
 
         // Initialize the player
         async function initPlayer() {
+            // Load the first audiobook
             await loadAudiobook(0);
+            
+            // Create audiobook cards
             renderAudiobookCards();
+            
+            // Set up event listeners
             setupEventListeners();
         }
 
@@ -579,62 +561,45 @@
             // Update UI
             currentBookTitle.textContent = book.title;
             currentBookAuthor.textContent = `By ${book.author}`;
-            document.querySelector('.book-cover').src = book.cover;
             
             // Set audio source
             audioElement.src = book.audio;
-            audioElement.load();
             
             // Load transcript
             try {
                 const response = await fetch(book.json);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                transcriptData = data.transcription || data; // Handle nested transcription
+                transcriptData = await response.json();
                 renderTranscript();
-                textDisplay.style.fontFamily = book.language === 'th' ? "'Noto Sans Thai', sans-serif" : "'Montserrat', sans-serif";
             } catch (error) {
                 console.error('Error loading transcript:', error);
-                textDisplay.innerHTML = '<p class="warning">Unable to load transcript. Please try again later.</p>';
+                textDisplay.innerHTML = '<p>Unable to load transcript. Please try again later.</p>';
             }
             
             // Update active button
             audioButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-audio') === book.title.toLowerCase().replace(/\s/g, '_'));
+                if (btn.getAttribute('data-audio') === book.title.toLowerCase()) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
             });
-
-            // Reset progress and time
-            progressBar.style.width = '0%';
-            currentTimeEl.textContent = '0:00';
-            durationEl.textContent = book.duration;
         }
 
         // Render transcript
         function renderTranscript() {
-            textDisplay.innerHTML = '';
-            transcriptData.forEach((fragment, index) => {
-                const p = document.createElement('p');
-                p.setAttribute('data-start', fragment.start);
-                p.setAttribute('data-end', fragment.end);
-                p.textContent = fragment.text;
-                p.addEventListener('click', () => {
-                    audioElement.currentTime = fragment.start;
-                    audioElement.play();
-                    playBtn.querySelector('i').className = 'fas fa-pause';
-                });
-                textDisplay.appendChild(p);
+            let textHTML = '';
+            transcriptData.forEach(fragment => {
+                textHTML += `<p data-start="${fragment.start}" data-end="${fragment.end}">${fragment.text}</p>`;
             });
+            textDisplay.innerHTML = textHTML;
         }
 
         // Render audiobook cards
         function renderAudiobookCards() {
-            audiobookCards.innerHTML = '';
+            let cardsHTML = '';
             audiobooks.forEach((book, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.setAttribute('data-id', book.id);
-                card.setAttribute('data-index', index);
-                card.innerHTML = `
+                cardsHTML += `
+                <div class="card" data-id="${book.id}" data-index="${index}">
                     <img src="${book.cover}" alt="${book.title}" class="card-img">
                     <div class="card-content">
                         <h3 class="card-title">${book.title}</h3>
@@ -644,57 +609,18 @@
                             <span>${book.duration}</span>
                         </div>
                     </div>
+                </div>
                 `;
-                card.addEventListener('click', () => {
-                    currentBookIndex = index;
-                    loadAudiobook(currentBookIndex);
-                    audioElement.play();
-                    playBtn.querySelector('i').className = 'fas fa-pause';
-                });
-                audiobookCards.appendChild(card);
             });
-        }
-
-        // Format time in minutes and seconds
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        // Highlight text based on current time
-        function highlightText(currentTime) {
-            const paragraphs = textDisplay.querySelectorAll('p');
-            let found = false;
-            
-            paragraphs.forEach(p => {
-                const start = parseFloat(p.getAttribute('data-start'));
-                const end = parseFloat(p.getAttribute('data-end'));
-                
-                if (currentTime >= start && currentTime < end) {
-                    p.classList.add('highlight');
-                    if (!found) {
-                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        found = true;
-                    }
-                } else {
-                    p.classList.remove('highlight');
-                }
-            });
+            audiobookCards.innerHTML = cardsHTML;
         }
 
         // Set up event listeners
         function setupEventListeners() {
             // Play/Pause buttons
             playBtn.addEventListener('click', () => {
-                audioElement.play().then(() => {
-                    playBtn.querySelector('i').className = 'fas fa-pause';
-                }).catch(err => {
-                    formStatus.textContent = 'Error playing audio: ' + err.message;
-                    formStatus.className = 'status-message warning';
-                    formStatus.style.display = 'block';
-                });
+                audioElement.play();
+                playBtn.querySelector('i').className = 'fas fa-pause';
             });
             
             pauseBtn.addEventListener('click', () => {
@@ -720,8 +646,6 @@
             // Restart button
             restartBtn.addEventListener('click', () => {
                 audioElement.currentTime = 0;
-                audioElement.play();
-                playBtn.querySelector('i').className = 'fas fa-pause';
             });
             
             // Audio selection buttons
@@ -729,7 +653,7 @@
                 btn.addEventListener('click', () => {
                     const audioName = btn.getAttribute('data-audio');
                     const bookIndex = audiobooks.findIndex(book => 
-                        book.title.toLowerCase().replace(/\s/g, '_') === audioName);
+                        book.title.toLowerCase() === audioName.toLowerCase());
                     
                     if (bookIndex !== -1) {
                         currentBookIndex = bookIndex;
@@ -737,6 +661,17 @@
                         audioElement.play();
                         playBtn.querySelector('i').className = 'fas fa-pause';
                     }
+                });
+            });
+            
+            // Card clicks
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const index = parseInt(card.getAttribute('data-index'));
+                    currentBookIndex = index;
+                    loadAudiobook(currentBookIndex);
+                    audioElement.play();
+                    playBtn.querySelector('i').className = 'fas fa-pause';
                 });
             });
             
@@ -749,7 +684,6 @@
                 
                 if (!isNaN(duration)) {
                     audioElement.currentTime = (clickX / width) * duration;
-                    highlightText(audioElement.currentTime);
                 }
             });
             
@@ -761,43 +695,50 @@
                 if (!isNaN(duration)) {
                     const progressPercent = (currentTime / duration) * 100;
                     progressBar.style.width = `${progressPercent}%`;
+                    
+                    // Update time display
                     currentTimeEl.textContent = formatTime(currentTime);
                     durationEl.textContent = formatTime(duration);
+                    
+                    // Highlight text
                     highlightText(currentTime);
                 }
             });
-
-            // Update duration when metadata is loaded
-            audioElement.addEventListener('loadedmetadata', () => {
-                durationEl.textContent = formatTime(audioElement.duration);
-            });
-
+            
             // Form submission
-            submitBtn.addEventListener('click', () => {
-                const title = document.getElementById('title').value.trim();
-                const author = document.getElementById('author').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const message = document.getElementById('message').value.trim();
+            audiobookForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for your request! We will consider adding this audiobook to our collection.');
+                audiobookForm.reset();
+            });
+        }
 
-                if (!title || !author || !email) {
-                    formStatus.textContent = 'Please fill in all required fields.';
-                    formStatus.className = 'status-message warning';
-                    formStatus.style.display = 'block';
-                    return;
+        // Format time in minutes and seconds
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Highlight text based on current time
+        function highlightText(currentTime) {
+            const paragraphs = textDisplay.querySelectorAll('p');
+            let found = false;
+            
+            paragraphs.forEach(p => {
+                const start = parseFloat(p.getAttribute('data-start'));
+                const end = parseFloat(p.getAttribute('data-end'));
+                
+                if (currentTime >= start && currentTime < end) {
+                    p.classList.add('highlight');
+                    // Scroll to the highlighted paragraph
+                    if (!found) {
+                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        found = true;
+                    }
+                } else {
+                    p.classList.remove('highlight');
                 }
-
-                formStatus.textContent = 'Thank you for your request! We will consider adding this audiobook to our collection.';
-                formStatus.className = 'status-message success';
-                formStatus.style.display = 'block';
-                
-                document.getElementById('title').value = '';
-                document.getElementById('author').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('message').value = '';
-                
-                setTimeout(() => {
-                    formStatus.style.display = 'none';
-                }, 5000);
             });
         }
 
